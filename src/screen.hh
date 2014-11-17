@@ -24,16 +24,37 @@
 #ifndef SCREEN_H_
 #define SCREEN_H_
 
-namespace Screen {
+#include <queue>
+#include <mutex>
+#include <thread>
+#include <functional>
+#include <signal.h>
+
+namespace Curses {
+
+enum InputErr {
+  kInputEmpty,
+  kInputFull,
+};
 
 class Screen {
  public:
   Screen();
+  Screen(const Screen&);
   virtual ~Screen();
-  bool init();
+  void init_or_die();
+  std::pair<char, InputErr> get_user_input();
+  void update_window(int y, int x);
+  std::mutex input_lock_;
  private:
-  void *resize_handler(int signal);
+  int window_y_;
+  int window_x_;
+  std::mutex signal_lock_;
+  std::queue<char> user_input_;
+  std::thread user_input_thread_;
 };
+
+std::function<void(void)> wait_for_user_input(Screen *scr);
 
 } // namespace Screen
 

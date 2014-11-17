@@ -21,16 +21,63 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#include <iostream>
+#include <mutex>
+#include <thread>
+#include <functional>
+#include <signal.h>
+#include <ncurses.h>
+
 #include "screen.hh"
 
-namespace Screen {
+namespace Curses {
 
 Screen::Screen() {
 
 }
 
+
 Screen::~Screen() {
 
 }
+
+void Screen::init_or_die() {
+    getmaxyx(stdscr,
+             this->window_y_,
+             this->window_x_);
+    initscr();
+    raw();
+    std::thread user_input_thread(wait_for_user_input(this));
+}
+
+void Screen::update_window(int y, int x) {
+  std::lock_guard<std::mutex> guard(this->input_lock_);
+  this->window_y_ = y;
+  this->window_x_ = x;
+}
+
+std::pair<char, InputErr> Screen::get_user_input() {
+  std::pair<char, InputErr> result;
+  std::lock_guard<std::mutex> guard(this->input_lock_);
+  if (!this->user_input_.empty()) {
+    result.first = this->user_input_.front();
+    this->user_input_.pop();
+    result.second = kInputFull;
+  } else {
+    result.first = '\0';
+    result.second = kInputEmpty;
+  }
+  return result;
+}
+
+std::function<void(void)> wait_for_user_input(Screen *scr) {
+  return [&]() {
+    char c;
+    for(;;) {
+      c = (char) getch();
+    }
+  };
+}
+
 
 } // namespace Screen

@@ -14,11 +14,15 @@ OPT ?= -Weverything \
        -Wno-padded \
        -Wno-nonnull \
        -Wno-unused-parameter \
+       -Wno-unreachable-code-return \
        -Wno-old-style-cast \
        -Wno-unused-label \
        -Wno-variadic-macros \
        -Wno-c99-extensions \
        -Wno-c++98-compat \
+       -Wno-missing-noreturn \
+       -Wno-c++98-compat-pedantic \
+       -Wno-c++1z-extensions \
        -Wno-global-constructors
 
 SRCDIR = src
@@ -26,14 +30,14 @@ OBJDIR=obj
 
 DEBUGOPT ?= -ggdb3 -fno-inline -O0 -DDEBUG
 
-CXXFLAGS += $(OPT) -I$(SRCDIR) -std=c++11
+CXXFLAGS += $(OPT) -I$(SRCDIR) -pthread -std=c++11 -stdlib=libstdc++
 CXXSTATICFLAGS = $(CXXFLAGS) -c -static
+LINKFLAGS = -lncurses -ltermbox
 
 TESTS =
 TESTFLAGS = $(CXXFLAGS)
 TESTFLAGS += -lgtest
 TEST_DEFINES ?= -DDEBUG
-
 
 # Main target
 MAIN = main
@@ -63,7 +67,7 @@ run: all
 	./$(MAIN_EXEC) ${ARGS}
 
 main: $(OBJS)
-	$(CXX) $(CXXFLAGS) $^ -o $(MAIN_EXEC)
+	$(CXX) $(CXXFLAGS) $(LINKFLAGS) $^ -o $(MAIN_EXEC)
 
 valgrind: OPT += ${DEBUGOPT}
 valgrind: all

@@ -24,10 +24,78 @@
 // THE SOFTWARE.
 
 #include <string>
+#include <queue>
+#include <memory>
+#include <unistd.h>
 
-#include "screen.hh"
+#include "intro.hh"
+#include "termbox.hh"
+#include "graphics.hh"
+
+
+namespace Events {
+
+class EventHandler {
+ public:
+  EventHandler(std::shared_ptr<TB::Box> termbox) {
+    this->box = termbox;
+    this->default_timeout = 100;
+  }
+
+  bool poll() {
+    assert (NULL != this->box);
+    tb_event tv;
+    switch (this->box->peek_event(&tv, this->default_timeout)) {
+      case TB::Event_Key:
+        queue.push(TB::Keypress(tv));
+        return true;
+      case TB::Event_Resize:
+        return false;
+      case TB::Event_None:
+        return false;
+    };
+  }
+
+ private:
+  std::shared_ptr<TB::Box> box;
+  std::queue<TB::Keypress> queue;
+  int default_timeout;
+};
+
+} // namespace Events
+
+namespace Game {
+
+class Game {
+ public:
+  Game(): box(), g(box), eh(box) {
+    this->box = std::shared_ptr<TB::Box>(new TB::Box);
+    this->eh = Events::EventHandler(this->box);
+    this->g = Graphics::Graphics(this->box);
+  }
+
+  void draw_intro() {
+    ::draw_intro(this->g);
+  }
+
+  void tick() {
+    this->g.tick();
+  }
+
+ private:
+  std::shared_ptr<TB::Box> box;
+  Graphics::Graphics g;
+  Events::EventHandler eh;
+};
+
+} // namespace Game
+
 
 int main(int argc, char** argv) {
-  Screen::Screen scr;
+  Game::Game g;
+  g.draw_intro();
+  for(int i = 0; i < 10000; i++) {
+    g.tick();
+  }
   return 0;
 }
