@@ -24,8 +24,11 @@
 // THE SOFTWARE.
 
 #include <string>
+#include <iostream>
 #include <queue>
 #include <memory>
+#include <future>
+#include <unordered_set>
 #include <unistd.h>
 
 #include "intro.hh"
@@ -35,32 +38,33 @@
 
 namespace Events {
 
-class EventHandler {
- public:
-  EventHandler(std::shared_ptr<TB::Box> termbox) {
-    this->box = termbox;
-    this->default_timeout = 100;
-  }
 
-  bool poll() {
-    assert (NULL != this->box);
-    tb_event tv;
-    switch (this->box->peek_event(&tv, this->default_timeout)) {
-      case TB::Event_Key:
-        queue.push(TB::Keypress(tv));
-        return true;
-      case TB::Event_Resize:
-        return false;
-      case TB::Event_None:
-        return false;
-    };
-  }
-
- private:
-  std::shared_ptr<TB::Box> box;
-  std::queue<TB::Keypress> queue;
-  int default_timeout;
+struct KeyEvent {
+  enum {None, Some} tag;
+  union {
+    char none;
+    TB::Keypress key;
+  };
 };
+
+
+KeyEvent poll_event(std::shared_ptr<TB::Box> box);
+
+KeyEvent poll_event(std::shared_ptr<TB::Box> box) {
+  assert (nullptr != box);
+  KeyEvent ev = {KeyEvent::None, {'\0'}};
+  tb_event tv;
+  switch (box->poll_event(&tv)) {
+    case TB::Event_Key: {
+      TB::Keypress result(tv);
+      ev.tag = KeyEvent::Some;
+      ev.key = result;
+      return ev;
+    }
+    default:
+      return ev;
+  };
+}
 
 } // namespace Events
 
@@ -75,7 +79,15 @@ class Game {
   }
 
   void draw_intro() {
+    auto input = std::async(Events::poll_event,
+                                this->box);
     ::draw_intro(this->g);
+    input.wait();
+    auto usr_input = input.get();
+    if (usr_input.tag == Events::KeyEvent::Some) {
+      auto keypress = this->eh.get_keypress();
+      std::cout << "User: " << keypress.get_ch();
+    }
   }
 
  private:
@@ -89,6 +101,6 @@ class Game {
 
 int main(int argc, char** argv) {
   Game::Game g;
-  //g.draw_intro();
+  g.draw_intro();
   return 0;
 }

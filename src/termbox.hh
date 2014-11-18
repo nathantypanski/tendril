@@ -59,202 +59,70 @@ enum EventType {
 
 class ToggleableAttributes {
  public:
-  color_t get_fg() const {
-    return this->fg_;
-  }
-
-  void set_fg(color_t foreground) {
-    this->fg_ = foreground;
-  }
-
-  color_t get_bg() const {
-    return this->bg_;
-  }
-
-  void set_bg(color_t background) {
-    this->bg_ = background;
-  }
-
-  bool get_bold() const {
-    return this->bl_;
-  }
-
-  void set_bold() {
-    this->bl_ = true;
-  }
-
-  void unset_bold() {
-    this->bl_ = true;
-  }
-
-  bool get_underline() const {
-    return this->ul_;
-  }
-
-  void set_underline() {
-    this->ul_ = true;
-  }
-
-  void unset_underline() {
-    this->ul_ = false;
-  }
-
-  bool get_reverse() const {
-    return this->rv_;
-  }
-
-  void set_reverse() {
-    this->rv_ = true;
-  }
-
-  void unset_reverse() {
-    this->rv_ = false;
-  }
-
+  color_t get_fg() const;
+  void set_fg(color_t foreground);
+  color_t get_bg() const;
+  void set_bg(color_t background);
+  bool get_bold() const;
+  void set_bold();
+  void unset_bold();
+  bool get_underline() const;
+  void set_underline();
+  void unset_underline();
+  bool get_reverse() const;
+  void set_reverse();
+  void unset_reverse();
  protected:
-  ToggleableAttributes() {
-    this->fg_ = WHITE;
-    this->bg_ = DEFAULT;
-    this->ul_ = false;
-    this->bl_ = false;
-    this->rv_ = false;
-  }
-
+  ToggleableAttributes();
   color_t fg_;
   color_t bg_;
   bool ul_;
   bool bl_;
   bool rv_;
-
 };
 
-class Cell : public ToggleableAttributes {
+class Cell: public ToggleableAttributes {
  public:
-  Cell(character_t c) {
-    this->ch_ = c;
-  }
-
-  Cell(char c) {
-    this->ch_ = (character_t) c;
-  }
-
-  const operator tb_cell() const {
-    tb_cell cell;
-    cell.ch = this->ch_;
-    cell.fg = this->get_fg();
-    if (this->get_underline()) {
-      cell.fg |= UNDERLINE;
-      cell.bg |= UNDERLINE;
-    }
-    if (this->get_bold()) {
-      cell.fg |= BOLD;
-      cell.bg |= BOLD;
-    }
-    if (this->get_reverse()) {
-      cell.fg |= REVERSE;
-      cell.bg |= REVERSE;
-    }
-    cell.bg = this->get_bg();
-    return cell;
-  }
+  Cell(character_t c);
+  Cell(char c);
+  Cell(Cell &c);
+  character_t get_ch() const;
+  const operator tb_cell() const;
+  const operator char() const;
+  bool operator == (const Cell &other);
  protected:
   character_t ch_;
 };
 
 class Keypress {
  public:
-  Keypress(tb_event ev) {
-    assert (ev.type == TB_EVENT_KEY);
-    this->mod = ev.mod;
-    this->key = ev.key;
-    this->ch = ev.ch;
-  }
+  Keypress(tb_event ev);
+  key_t get_key() const;
+  modkey_t get_mod() const;
+  ch_t get_ch() const;
  private:
-  modkey_t mod;
-  key_t key;
-  ch_t ch;
+  modkey_t mod_;
+  key_t key_;
+  ch_t ch_;
 };
 
 class Box {
-
  public:
-  Box() {
-    if (tb_init() < 0) {
-      exit(1);
-    }
-    this->clear();
-  }
-
-  ~Box() {
-    tb_shutdown();
-  }
-
-  void set_clear_attributes(color_t fg, color_t bg) {
-    tb_set_clear_attributes(fg, bg);
-  }
-
-  int get_width() {
-    int width = tb_width();
-    assert (width >= 0);
-    return width;
-  }
-
-  int get_height() {
-    int height = tb_height();
-    assert (height >= 0);
-    return height;
-  }
-
-  void clear() {
-    tb_clear();
-  }
-
-  void present() {
-    tb_present();
-  }
-
-  void set_cursor(int cx, int cy) {
-    tb_set_cursor(cx, cy);
-  }
-
-  void hide_cursor() {
-    tb_set_cursor(TB_HIDE_CURSOR, TB_HIDE_CURSOR);
-  }
-
-  void put_cell(int x, int y, const Cell &cell) {
-    const tb_cell tb = tb_cell(cell);
-    tb_put_cell(x, y, &tb);
-  }
-
-  void blit(int x, int y, int w, int h, const struct tb_cell *cells) {
-    tb_blit(x, y, w, h, cells);
-  }
-
-  int select_input_mode(int mode) {
-    return tb_select_input_mode(mode);
-  }
-
-  int select_output_mode(int mode) {
-    return tb_select_output_mode(mode);
-  }
-
-  EventType peek_event(struct tb_event *event, int timeout) {
-    int ev = tb_peek_event(event, timeout);
-    if (ev == TB_EVENT_KEY) {
-      return Event_Key;
-    }
-    else if (ev == TB_EVENT_RESIZE) {
-      return Event_Resize;
-    }
-    else {
-      return Event_None;
-    }
-  }
-
-  int poll_event(struct tb_event *event) {
-    return tb_poll_event(event);
-  }
-
+  Box();
+  ~Box();
+  void set_clear_attributes(color_t fg, color_t bg);
+  int get_width();
+  int get_height();
+  void clear();
+  void present();
+  void set_cursor(int cx, int cy);
+  void hide_cursor();
+  void put_cell(int x, int y, const Cell &cell);
+  void blit(int x, int y, int w, int h, const struct tb_cell *cells);
+  int select_input_mode(int mode);
+  int select_output_mode(int mode);
+  EventType peek_event(struct tb_event *event, int timeout);
+  int poll_event(struct tb_event *event);
 };
 
 } // namespace Termbox

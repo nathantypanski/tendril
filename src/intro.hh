@@ -37,7 +37,7 @@ void draw_intro(Graphics::Graphics &g) {
                   - (int)author.size(),
                   v_offset,
                   author);
-  sleep(3);
+  sleep(1);
 }
 
 #endif // INTRO_H_

@@ -30,7 +30,7 @@ OBJDIR=obj
 
 DEBUGOPT ?= -ggdb3 -fno-inline -O0 -DDEBUG
 
-CXXFLAGS += $(OPT) -I$(SRCDIR) -pthread -std=c++11 -stdlib=libstdc++
+CXXFLAGS += $(OPT) -I$(SRCDIR) -pthread -std=c++14 -stdlib=libstdc++
 CXXSTATICFLAGS = $(CXXFLAGS) -c -static
 LINKFLAGS = -lncurses -ltermbox
 
