@@ -1,5 +1,3 @@
-#ifndef GRAPHICS_H_
-#define GRAPHICS_H_
 
 #include <string>
 #include <memory>
@@ -8,37 +6,29 @@
 
 #include "termbox.hh"
 
+#ifndef GRAPHICS_H_
+#define GRAPHICS_H_
 
 namespace Graphics {
-
-class GraphicsCell {
- public:
-  GraphicsCell(TB::position_t x_pos, TB::position_t y_pos,
-               TB::Cell tcell): x(x_pos), y(y_pos), cell(tcell) {
-  }
-
-  TB::position_t get_x() const {
-    return this->x;
-  }
-
-  TB::position_t get_y() const {
-    return this->x;
-  }
-
-  TB::Cell get_cell() const {
-    return this->cell;
-  }
-
- private:
-  TB::position_t x;
-  TB::position_t y;
-  TB::Cell cell;
-};
 
 class Graphics : public TB::ToggleableAttributes {
 public:
   Graphics(std::shared_ptr<TB::Box> termbox) {
     this->box = termbox;
+  }
+
+  void draw_hline(TB::Cell c, TB::position_t x, TB::position_t y, TB::position_t length) {
+    assert (NULL != this->box);
+    for (TB::position_t xi = x; xi < length; xi++) {
+      this->box->put_cell(xi, y, c);
+    }
+  }
+
+  void draw_vline(TB::Cell c, TB::position_t x, TB::position_t y, TB::position_t length) {
+    assert (NULL != this->box);
+    for (TB::position_t yi = x; yi < length; yi++) {
+      this->box->put_cell(x, yi, c);
+    }
   }
 
   void write_string(TB::position_t x, TB::position_t y, std::string s) {
@@ -55,7 +45,9 @@ public:
   void teletype_text(TB::position_t x, TB::position_t y, std::string s) {
     assert (NULL != this->box);
     for(std::string::iterator c = s.begin(); c != s.end(); c++) {
-      this->push_cell(GraphicsCell(x, y, this->get_default_cell(*c)));
+      this->box->put_cell(x, y, this->get_default_cell(*c));
+      usleep(50000);
+      this->box->present();
       x++;
     }
   }
@@ -76,19 +68,6 @@ public:
     return cell;
   }
 
-  void push_cell(GraphicsCell cell) {
-    this->queue.push(cell);
-  }
-
-  void tick() {
-    if (!this->queue.empty()) {
-      GraphicsCell gcell = this->queue.front();
-      this->queue.pop();
-      this->box->put_cell(gcell.get_x(), gcell.get_y(), gcell.get_cell());
-      this->box->present();
-    }
-  }
-
   int get_width() {
     assert (NULL != this->box);
     return box->get_width();
@@ -101,7 +80,6 @@ public:
 
 private:
   std::shared_ptr<TB::Box> box;
-  std::queue<GraphicsCell> queue;
 };
 
 } // namespace Graphics

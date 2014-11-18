@@ -78,10 +78,6 @@ class Game {
     ::draw_intro(this->g);
   }
 
-  void tick() {
-    this->g.tick();
-  }
-
  private:
   std::shared_ptr<TB::Box> box;
   Graphics::Graphics g;
@@ -93,9 +89,6 @@ class Game {
 
 int main(int argc, char** argv) {
   Game::Game g;
-  g.draw_intro();
-  for(int i = 0; i < 10000; i++) {
-    g.tick();
-  }
+  //g.draw_intro();
   return 0;
 }
