@@ -1,13 +1,35 @@
+#include "graphics.hh"
 
 #include <type_traits>
 
-#include "graphics.hh"
-
 namespace Graphics {
 
+Positionable::Positionable(position_t x, position_t y) {
+  this->x_ = x;
+  this->y_ = y;
+}
+
+Positionable::Positionable(Positionable &p) {
+  this->x_ = p.get_x();
+  this->y_ = p.get_y();
+}
+
+position_t Positionable::get_x() {
+  return this->x_;
+}
+
+position_t Positionable::get_y() {
+  return this->y_;
+}
 
 Graphics::Graphics(std::shared_ptr<TB::Box> termbox) {
   this->box = termbox;
+}
+
+
+void Graphics::draw_block(Block b) {
+  const TB::Cell cell(b);
+  this->box->put_cell(b.get_x(), b.get_y(), cell);
 }
 
 void Graphics::draw_hline(TB::Cell c,
@@ -59,6 +81,10 @@ void Graphics::teletype_text(TB::position_t x,
     this->box->present();
     x++;
   }
+}
+
+void Graphics::present() {
+  this->box->present();
 }
 
 template<typename T>

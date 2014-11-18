@@ -1,6 +1,8 @@
 
 #include "termbox.hh"
 
+#include "debug.hh"
+
 namespace TB {
 
 color_t ToggleableAttributes::get_fg() const {
@@ -63,26 +65,21 @@ ToggleableAttributes::ToggleableAttributes() {
   this->rv_ = false;
 }
 
-Cell::Cell(character_t c) {
-  this->ch_ = c;
-}
-
-Cell::Cell(char c) {
-  this->ch_ = (character_t) c;
-}
-
 Cell::Cell(Cell &c) {
   this->ch_ = c.ch_;
-  this->fg_ = WHITE;
-  this->bg_ = DEFAULT;
-  this->ul_ = false;
-  this->bl_ = false;
-  this->rv_ = false;
+  this->fg_ = c.get_fg();
+  this->bg_ = c.get_bg();
+  this->ul_ = c.get_underline();
+  this->bl_ = c.get_bold();
+  this->rv_ = c.get_reverse();
 }
-
 
 character_t Cell::get_ch() const {
   return this->ch_;
+}
+
+const Cell::operator character_t() const {
+  return  this->ch_;
 }
 
 const Cell::operator char() const {
@@ -211,7 +208,19 @@ EventType Box::peek_event(struct tb_event *event, int timeout) {
 }
 
 int Box::poll_event(struct tb_event *event) {
-  return tb_poll_event(event);
+  switch (tb_poll_event(event)) {
+      case TB_EVENT_KEY: {
+        return Event_Key;
+
+      }
+      case TB_EVENT_RESIZE: {
+        return Event_Resize;
+
+      }
+      default: {
+        return Event_None;
+      }
+    }
 }
 
 } // namespace TB

@@ -34,66 +34,44 @@
 #include "intro.hh"
 #include "termbox.hh"
 #include "graphics.hh"
+#include "events.hh"
 
-
-namespace Events {
-
-
-struct KeyEvent {
-  enum {None, Some} tag;
-  union {
-    char none;
-    TB::Keypress key;
-  };
-};
-
-
-KeyEvent poll_event(std::shared_ptr<TB::Box> box);
-
-KeyEvent poll_event(std::shared_ptr<TB::Box> box) {
-  assert (nullptr != box);
-  KeyEvent ev = {KeyEvent::None, {'\0'}};
-  tb_event tv;
-  switch (box->poll_event(&tv)) {
-    case TB::Event_Key: {
-      TB::Keypress result(tv);
-      ev.tag = KeyEvent::Some;
-      ev.key = result;
-      return ev;
-    }
-    default:
-      return ev;
-  };
-}
-
-} // namespace Events
 
 namespace Game {
 
 class Game {
  public:
-  Game(): box(), g(box), eh(box) {
+  Game(): box(), graphics(box) {
     this->box = std::shared_ptr<TB::Box>(new TB::Box);
-    this->eh = Events::EventHandler(this->box);
-    this->g = Graphics::Graphics(this->box);
+    this->graphics = Graphics::Graphics(this->box);
   }
 
   void draw_intro() {
     auto input = std::async(Events::poll_event,
-                                this->box);
-    ::draw_intro(this->g);
+                            this->box);
+    ::draw_intro(this->graphics);
     input.wait();
     auto usr_input = input.get();
-    if (usr_input.tag == Events::KeyEvent::Some) {
-      auto keypress = this->eh.get_keypress();
-      std::cout << "User: " << keypress.get_ch();
+    switch(usr_input.tag) {
+      case Events::KeyEvent::Some: {
+        auto c = usr_input.key.get_ch();
+        Graphics::Block s(c, 1, 1);
+        this->graphics.draw_block(s);
+        this->graphics.present();
+        sleep(3);
+        break;
+      }
+      case Events::KeyEvent::None: {
+        break;
+      }
     }
+    this->graphics.present();
+    sleep(3);
   }
 
  private:
   std::shared_ptr<TB::Box> box;
-  Graphics::Graphics g;
-  Events::EventHandler eh;
+  Graphics::Graphics graphics;
 };
 
 } // namespace Game

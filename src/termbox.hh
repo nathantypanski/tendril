@@ -26,6 +26,7 @@
 
 #include <cassert>
 #include <termbox.h>
+#include <type_traits>
 #include <stdlib.h>
 
 namespace TB {
@@ -37,19 +38,25 @@ using modkey_t = uint8_t;
 using key_t = uint16_t;
 using ch_t = uint32_t;
 
-static color_t DEFAULT = TB_DEFAULT;
-static color_t BLACK = TB_BLACK;
-static color_t RED = TB_RED;
-static color_t GREEN = TB_GREEN;
-static color_t YELLOW = TB_YELLOW;
-static color_t BLUE = TB_BLUE;
-static color_t MAGENTA = TB_MAGENTA;
-static color_t CYAN = TB_CYAN;
-static color_t WHITE = TB_WHITE;
+static const color_t DEFAULT = TB_DEFAULT;
+static const color_t BLACK = TB_BLACK;
+static const color_t RED = TB_RED;
+static const color_t GREEN = TB_GREEN;
+static const color_t YELLOW = TB_YELLOW;
+static const color_t BLUE = TB_BLUE;
+static const color_t MAGENTA = TB_MAGENTA;
+static const color_t CYAN = TB_CYAN;
+static const color_t WHITE = TB_WHITE;
 
-static color_t BOLD = TB_BOLD;
-static color_t UNDERLINE = TB_UNDERLINE;
-static color_t REVERSE = TB_REVERSE;
+static const color_t BOLD = TB_BOLD;
+static const color_t UNDERLINE = TB_UNDERLINE;
+static const color_t REVERSE = TB_REVERSE;
+
+static const color_t CELL_DEFAULT_FG = WHITE;
+static const color_t CELL_DEFAULT_BG = DEFAULT;
+static const bool CELL_DEFAULT_UL = false;
+static const bool CELL_DEFAULT_BL = false;
+static const bool CELL_DEFAULT_RV = false;
 
 enum EventType {
   Event_Key,
@@ -83,11 +90,43 @@ class ToggleableAttributes {
 
 class Cell: public ToggleableAttributes {
  public:
-  Cell(character_t c);
-  Cell(char c);
+
+  template<typename T>
+  Cell(T c) {
+    static_assert(std::is_convertible<T, character_t>::value);
+    this->ch_ = (character_t) c;
+    this->fg_ = CELL_DEFAULT_FG;
+    this->bg_ = CELL_DEFAULT_BG;
+    this->ul_ = CELL_DEFAULT_UL;
+    this->bl_ = CELL_DEFAULT_BL;
+    this->rv_ = CELL_DEFAULT_RV;
+  }
+
+  template<typename T>
+  Cell(T c, color_t fg, color_t bg) {
+    static_assert(std::is_convertible<T, character_t>::value);
+    this->ch_ = (character_t) c;
+    this->fg_ = fg;
+    this->bg_ = bg;
+    this->ul_ = CELL_DEFAULT_UL;
+    this->bl_ = CELL_DEFAULT_BL;
+    this->rv_ = CELL_DEFAULT_RV;
+  }
+
+  template<typename T>
+  Cell(T c, color_t fg, color_t bg, bool ul, bool bl, bool rv) {
+    static_assert(std::is_convertible<T, character_t>::value);
+    this->ch_ = (character_t) c;
+    this->fg_ = fg;
+    this->bg_ = bg;
+    this->ul_ = ul;
+    this->bl_ = bl;
+    this->rv_ = rv;
+  }
   Cell(Cell &c);
   character_t get_ch() const;
   const operator tb_cell() const;
+  const operator character_t() const;
   const operator char() const;
   bool operator == (const Cell &other);
  protected:
