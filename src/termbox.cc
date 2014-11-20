@@ -58,14 +58,18 @@ void ToggleableAttributes::unset_reverse() {
 }
 
 ToggleableAttributes::ToggleableAttributes() {
-  this->fg_ = WHITE;
-  this->bg_ = DEFAULT;
-  this->ul_ = false;
-  this->bl_ = false;
-  this->rv_ = false;
+  this->fg_ = CELL_DEFAULT_FG;
+  this->bg_ = CELL_DEFAULT_BG;
+  this->ul_ = CELL_DEFAULT_UL;
+  this->bl_ = CELL_DEFAULT_BL;
+  this->rv_ = CELL_DEFAULT_RV;
 }
 
-Cell::Cell(Cell &c) {
+Cell::Cell(): ToggleableAttributes() {
+  this->ch_ = ' ';
+}
+
+Cell::Cell(const Cell &c): ToggleableAttributes() {
   this->ch_ = c.ch_;
   this->fg_ = c.get_fg();
   this->bg_ = c.get_bg();
@@ -83,7 +87,7 @@ const Cell::operator character_t() const {
 }
 
 const Cell::operator char() const {
-  return (char) this->ch_;
+  return static_cast<char>(this->ch_);
 }
 
 const Cell::operator tb_cell() const {
@@ -190,35 +194,35 @@ int Box::select_input_mode(int mode) {
   return tb_select_input_mode(mode);
 }
 
-int Box::select_output_mode(int mode) {
-  return tb_select_output_mode(mode);
+int Box::select_output_mode(OutputMode mode) {
+  return tb_select_output_mode(static_cast<int>(mode));
 }
 
-EventType Box::peek_event(struct tb_event *event, int timeout) {
+EventType Box::peek_event(struct tb_event *event, const int timeout) {
   auto ev = tb_peek_event(event, timeout);
   if (ev == TB_EVENT_KEY) {
-    return Event_Key;
+    return EventType::Key;
   }
   else if (ev == TB_EVENT_RESIZE) {
-    return Event_Resize;
+    return EventType::Resize;
   }
   else {
-    return Event_None;
+    return EventType::None;
   }
 }
 
-int Box::poll_event(struct tb_event *event) {
+EventType Box::poll_event(struct tb_event *event) {
   switch (tb_poll_event(event)) {
       case TB_EVENT_KEY: {
-        return Event_Key;
+        return EventType::Key;
 
       }
       case TB_EVENT_RESIZE: {
-        return Event_Resize;
+        return EventType::Resize;
 
       }
       default: {
-        return Event_None;
+        return EventType::None;
       }
     }
 }

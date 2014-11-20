@@ -8,7 +8,7 @@
 namespace Events {
 
 struct KeyEvent {
-  enum {None, Some} tag;
+  enum Class {None, Some} tag;
   union {
     char none;
     TB::Keypress key;

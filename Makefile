@@ -12,25 +12,17 @@ CXX = clang++
 OPT ?= -Weverything \
        -Werror \
        -Wno-padded \
-       -Wno-nonnull \
-       -Wno-unused-parameter \
-       -Wno-unreachable-code-return \
-       -Wno-old-style-cast \
-       -Wno-unused-label \
        -Wno-variadic-macros \
        -Wno-c99-extensions \
        -Wno-c++98-compat \
-       -Wno-missing-noreturn \
-       -Wno-c++98-compat-pedantic \
-       -Wno-c++1z-extensions \
-       -Wno-global-constructors
+       -Wno-c++98-compat-pedantic
 
 SRCDIR = src
 OBJDIR=obj
 
 DEBUGOPT ?= -ggdb3 -fno-inline -O0 -DDEBUG
 
-CXXFLAGS += $(OPT) -I$(SRCDIR) -pthread -std=c++14 -stdlib=libstdc++
+CXXFLAGS += $(OPT) -I$(SRCDIR) -pthread -std=c++11 -stdlib=libstdc++
 CXXSTATICFLAGS = $(CXXFLAGS) -c -static
 LINKFLAGS = -lncurses -ltermbox
 
@@ -45,10 +37,10 @@ MAIN = main
 # Name for the main executable.
 MAIN_EXEC = balloon
 
-SRCS=$(wildcard $(SRCDIR)/*.cpp)
-OBJS := $(addprefix $(OBJDIR)/,$(notdir $(SRCS:.cpp=.o)))
+SRCS=$(wildcard $(SRCDIR)/*.cc)
+OBJS := $(addprefix $(OBJDIR)/,$(notdir $(SRCS:.cc=.o)))
 
-obj/%.o: src/%.cpp
+obj/%.o: src/%.cc
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 PHONY: clean all main
@@ -74,20 +66,6 @@ valgrind: all
 	valgrind --leak-check=full --show-leak-kinds=all -- ./$(MAIN) ${ARGS}
 
 ## TEST
-
-filereader_test: $(SRCDIR)/filereader/filereader_test.cpp filereader.a
-	$(CXX) -lgtest $(CXXFLAGS) $^ -o $@
-
-stringparserclass_test: $(SRCDIR)/stringparserclass/stringparserclass_test.cpp \
-			stringparserclass.a
-	$(CXX) -lgtest $(CXXFLAGS) $^ -o $@
-
-test: OPT += ${TEST_DEFINES}
-test: OPT += ${DEBUGOPT}
-test: all $(TESTS)
-	@for testcase in $(TESTS); do \
-	    ./$$testcase; \
-	done;
 
 debug: OPT += ${DEBUGOPT}
 debug: all

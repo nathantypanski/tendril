@@ -11,8 +11,8 @@ void draw_intro(Graphics::Graphics &g) {
   std::string second_line = "the sky was that mean shade of gray.";
   std::string book = "Neuromancer";
   std::string author = ", William Gibson";
-  int h_offset = g.get_width() / 3;
-  int v_offset = g.get_height() / 3;
+  auto h_offset = g.get_width() / 3;
+  auto v_offset = g.get_height() / 3;
   g.set_bold();
   g.teletype_text(h_offset,
                   v_offset,
@@ -26,15 +26,15 @@ void draw_intro(Graphics::Graphics &g) {
   sleep(1);
   g.set_underline();
   g.teletype_text(h_offset
-                  + (int)second_line.size()
-                  - (int)book.size()
-                  - (int)author.size(),
+                  + static_cast<int>(second_line.size())
+                  - static_cast<int>(book.size())
+                  - static_cast<int>(author.size()),
                   v_offset,
                   book);
   g.unset_underline();
   g.teletype_text(h_offset
-                  + (int)second_line.size()
-                  - (int)author.size(),
+                  + static_cast<int>(second_line.size())
+                  - static_cast<int>(author.size()),
                   v_offset,
                   author);
   sleep(1);
