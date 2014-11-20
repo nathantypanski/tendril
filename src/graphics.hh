@@ -52,7 +52,7 @@ class Block: public TB::Cell, public Positionable {
 
 };
 
-class Graphics : public TB::ToggleableAttributes {
+class Graphics: public TB::ToggleableAttributes {
 public:
   Graphics(std::shared_ptr<TB::Box> termbox);
 
