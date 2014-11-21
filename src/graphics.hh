@@ -30,7 +30,7 @@ class Positionable {
   position_t y_;
 };
 
-class Graphics: public CellAttributes::Toggleable {
+class Graphics: public Cell::Attributes::Toggleable {
 public:
   Graphics(std::shared_ptr<TB::Box> termbox);
 

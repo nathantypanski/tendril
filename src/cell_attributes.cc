@@ -1,6 +1,8 @@
 #include "cell_attributes.hh"
 
-namespace CellAttributes {
+namespace Cell {
+
+namespace Attributes {
 
 color_t Toggleable::get_fg() const {
   return this->fg_;
@@ -62,4 +64,6 @@ Toggleable::Toggleable() {
   this->rv_ = Cell::Constants::CELL_DEFAULT_RV;
 }
 
-} // namespace CellAttributes
+} // namespace Attributes
+
+} // namespace Cell

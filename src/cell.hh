@@ -12,12 +12,12 @@ using color_t = Constants::color_t;
 using character_t = uint32_t;
 using position_t = int;
 
-class Cell: public CellAttributes::Toggleable {
+class Cell: public Attributes::Toggleable {
  public:
   Cell();
 
   template<typename T>
-  Cell(T c): CellAttributes::Toggleable() {
+  Cell(T c): Attributes::Toggleable() {
     static_assert(std::is_convertible<T, character_t>::value,
                   "T must be convertible into a character");
     static_assert(std::is_integral<T>::value,
@@ -26,7 +26,7 @@ class Cell: public CellAttributes::Toggleable {
   }
 
   template<typename T>
-  Cell(T c, color_t fg, color_t bg): CellAttributes::Toggleable()  {
+  Cell(T c, color_t fg, color_t bg): Attributes::Toggleable()  {
     static_assert(std::is_convertible<T, character_t>::value,
                   "T must be convertible into a character");
     this->ch_ = static_cast<character_t>(c);

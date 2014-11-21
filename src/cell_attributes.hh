@@ -3,9 +3,11 @@
 
 #include "cell_constants.hh"
 
-namespace CellAttributes {
+namespace Cell {
 
-using color_t = Cell::Constants::color_t;
+namespace Attributes {
+
+using color_t = Constants::color_t;
 
 class Toggleable {
  public:
@@ -31,6 +33,8 @@ class Toggleable {
   bool rv_;
 };
 
-} // namespace CellAttributes
+} // namespace Attributes
+
+} // namespace Cell
 
 #endif /* CELL_ATTRIBUTES_H_ */

@@ -6,11 +6,11 @@ using color_t = uint16_t;
 using character_t = uint32_t;
 using position_t = int;
 
-Cell::Cell(): CellAttributes::Toggleable() {
+Cell::Cell(): Attributes::Toggleable() {
   this->ch_ = ' ';
 }
 
-Cell::Cell(const Cell &c): CellAttributes::Toggleable() {
+Cell::Cell(const Cell &c): Attributes::Toggleable() {
   this->ch_ = c.ch_;
   this->fg_ = c.get_fg();
   this->bg_ = c.get_bg();
