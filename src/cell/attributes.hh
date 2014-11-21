@@ -1,7 +1,7 @@
 #ifndef CELL_ATTRIBUTES_H_
 #define CELL_ATTRIBUTES_H_
 
-#include "cell_constants.hh"
+#include "cell/constants.hh"
 
 namespace Cell {
 

@@ -30,7 +30,7 @@
 #include <vector>
 #include <stdlib.h>
 
-#include "cell.hh"
+#include "cell/cell.hh"
 
 namespace TB {
 

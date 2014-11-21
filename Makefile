@@ -37,10 +37,13 @@ MAIN = main
 # Name for the main executable.
 MAIN_EXEC = balloon
 
-SRCS=$(wildcard $(SRCDIR)/*.cc)
+SRCS=$(shell find src -name '*.cc')
 OBJS := $(addprefix $(OBJDIR)/,$(notdir $(SRCS:.cc=.o)))
 
 obj/%.o: src/%.cc
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+obj/%.o: src/cell/%.cc
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 PHONY: clean all main

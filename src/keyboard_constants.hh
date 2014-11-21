@@ -3,7 +3,9 @@
 
 #include <termbox.h>
 
-namespace KeyboardConstants {
+namespace Keyboard {
+
+namespace Constants {
 
 using key_t = uint16_t;
 
@@ -78,7 +80,9 @@ static const key_t KEY_CTRL_8 = TB_KEY_CTRL_8; // 0x7F /* clash with 'DELETE' */
 
 static const key_t MOD_ALT = TB_MOD_ALT; // 0x01
 
-} // namespace KeyboardConstants
+} // namespace Constants
+
+} // namespace Keyboard
 
 
 #endif /* KEYBOARD_CONSTANTS_H_ */

@@ -1,4 +1,4 @@
-#include "cell.hh"
+#include "cell/cell.hh"
 
 namespace Cell {
 

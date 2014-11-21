@@ -7,8 +7,8 @@
 #include <unistd.h>
 
 #include "box.hh"
-#include "cell.hh"
-#include "cell_constants.hh"
+#include "cell/cell.hh"
+#include "cell/constants.hh"
 
 #ifndef GRAPHICS_H_
 #define GRAPHICS_H_

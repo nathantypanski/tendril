@@ -1,7 +1,7 @@
 
 #include <memory>
 
-#include "cell.hh"
+#include "cell/cell.hh"
 #include "graphics.hh"
 
 

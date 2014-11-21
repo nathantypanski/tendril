@@ -4,8 +4,8 @@
 
 #include "entity.hh"
 #include "graphics.hh"
-#include "cell.hh"
-#include "cell_constants.hh"
+#include "cell/cell.hh"
+#include "cell/constants.hh"
 
 namespace Player {
 

@@ -27,7 +27,7 @@ void Game::handle_user_input() {
     case Events::KeyEvent::Some: {
       auto c = usr_input.key.get_ch();
       auto k = usr_input.key.get_key();
-      if (KeyboardConstants::KEY_ESC == k) { // user quit
+      if (Keyboard::Constants::KEY_ESC == k) { // user quit
         this->running_ = false;
         break;
       }
