@@ -5,7 +5,7 @@
 
 namespace CellAttributes {
 
-using color_t = CellConstants::color_t;
+using color_t = Cell::Constants::color_t;
 
 class Toggleable {
  public:

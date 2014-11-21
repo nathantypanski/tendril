@@ -55,11 +55,11 @@ void Toggleable::unset_reverse() {
 }
 
 Toggleable::Toggleable() {
-  this->fg_ = CellConstants::CELL_DEFAULT_FG;
-  this->bg_ = CellConstants::CELL_DEFAULT_BG;
-  this->ul_ = CellConstants::CELL_DEFAULT_UL;
-  this->bl_ = CellConstants::CELL_DEFAULT_BL;
-  this->rv_ = CellConstants::CELL_DEFAULT_RV;
+  this->fg_ = Cell::Constants::CELL_DEFAULT_FG;
+  this->bg_ = Cell::Constants::CELL_DEFAULT_BG;
+  this->ul_ = Cell::Constants::CELL_DEFAULT_UL;
+  this->bl_ = Cell::Constants::CELL_DEFAULT_BL;
+  this->rv_ = Cell::Constants::CELL_DEFAULT_RV;
 }
 
 } // namespace CellAttributes

@@ -8,7 +8,7 @@
 
 namespace Cell {
 
-using color_t = CellConstants::color_t;
+using color_t = Constants::color_t;
 using character_t = uint32_t;
 using position_t = int;
 
@@ -32,9 +32,9 @@ class Cell: public CellAttributes::Toggleable {
     this->ch_ = static_cast<character_t>(c);
     this->fg_ = fg;
     this->bg_ = bg;
-    this->ul_ = CellConstants::CELL_DEFAULT_UL;
-    this->bl_ = CellConstants::CELL_DEFAULT_BL;
-    this->rv_ = CellConstants::CELL_DEFAULT_RV;
+    this->ul_ = Constants::CELL_DEFAULT_UL;
+    this->bl_ = Constants::CELL_DEFAULT_BL;
+    this->rv_ = Constants::CELL_DEFAULT_RV;
   }
 
   template<typename T>

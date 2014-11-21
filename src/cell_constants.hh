@@ -3,7 +3,8 @@
 
 #include <termbox.h>
 
-namespace CellConstants {
+namespace Cell {
+namespace Constants {
 
 using color_t = uint16_t;
 
@@ -27,7 +28,8 @@ static const bool CELL_DEFAULT_UL = false;
 static const bool CELL_DEFAULT_BL = false;
 static const bool CELL_DEFAULT_RV = false;
 
-} // namespace CellConstants
+} // namespace Constants
+} // namespace Cell
 
 
 #endif /* CELL_CONSTANTS_H_ */

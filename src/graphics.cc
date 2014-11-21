@@ -24,7 +24,7 @@ position_t Positionable::get_y() const {
 
 Graphics::Graphics(std::shared_ptr<TB::Box> termbox) {
   this->box = termbox;
-  this->box->set_clear_attributes(CellConstants::WHITE, CellConstants::DEFAULT);
+  this->box->set_clear_attributes(Cell::Constants::WHITE, Cell::Constants::DEFAULT);
 }
 
 void Graphics::Clear() {

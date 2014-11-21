@@ -36,16 +36,16 @@ const Cell::operator tb_cell() const {
   cell.ch = this->ch_;
   cell.fg = this->get_fg();
   if (this->get_underline()) {
-    cell.fg |= CellConstants::UNDERLINE;
-    cell.bg |= CellConstants::UNDERLINE;
+    cell.fg |= Constants::UNDERLINE;
+    cell.bg |= Constants::UNDERLINE;
   }
   if (this->get_bold()) {
-    cell.fg |= CellConstants::BOLD;
-    cell.bg |= CellConstants::BOLD;
+    cell.fg |= Constants::BOLD;
+    cell.bg |= Constants::BOLD;
   }
   if (this->get_reverse()) {
-    cell.fg |= CellConstants::REVERSE;
-    cell.bg |= CellConstants::REVERSE;
+    cell.fg |= Constants::REVERSE;
+    cell.bg |= Constants::REVERSE;
   }
   cell.bg = this->get_bg();
   return cell;

@@ -18,7 +18,7 @@ class Player : public Entity::Entity {
          position_t y): Entity::Entity(g, x, y) {
     for(int i = 0; i < 12; i++) {
       Cell::Cell c;
-      c.set_bg(CellConstants::WHITE);
+      c.set_bg(Cell::Constants::WHITE);
       this->cells_.push_back(c);
     }
     this->width_ = 3;
