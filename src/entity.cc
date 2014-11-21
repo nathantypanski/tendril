@@ -18,4 +18,7 @@ void Entity::MoveRight() {
   this->x_++;
 }
 
+Entity::~Entity() {
+}
+
 } // namespace Entity

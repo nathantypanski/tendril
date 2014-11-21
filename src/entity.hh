@@ -18,11 +18,12 @@ class Entity {
     this->x_ = x;
     this->y_ = y;
   }
-  void Tick();
+  virtual void Tick() = 0;
   void MoveUp();
   void MoveDown();
   void MoveLeft();
   void MoveRight();
+  virtual ~Entity();
  protected:
   position_t x_;
   position_t y_;
