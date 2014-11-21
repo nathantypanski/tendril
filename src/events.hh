@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "termbox.hh"
+#include "box.hh"
 
 namespace Events {
 

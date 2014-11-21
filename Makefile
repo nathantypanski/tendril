@@ -71,7 +71,7 @@ debug: OPT += ${DEBUGOPT}
 debug: all
 
 gdb: debug
-	gdb -quiet ./$(MAIN) ${ARGS}
+	gdb -quiet ./$(MAIN_EXEC) ${ARGS}
 
 memcheck: debug
 	valgrind --tool=memcheck \

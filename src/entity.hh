@@ -1,7 +1,7 @@
 
 #include <memory>
 
-#include "termbox.hh"
+#include "cell.hh"
 #include "graphics.hh"
 
 
@@ -18,12 +18,15 @@ class Entity {
     this->x_ = x;
     this->y_ = y;
   }
-
-  void tick();
+  void Tick();
+  void MoveUp();
+  void MoveDown();
+  void MoveLeft();
+  void MoveRight();
  protected:
   position_t x_;
   position_t y_;
-  std::vector<TB::Cell> cells_;
+  std::vector<Cell::Cell> cells_;
   std::shared_ptr<Graphics::Graphics> g_;
 };
 

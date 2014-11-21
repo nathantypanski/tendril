@@ -1,6 +1,5 @@
 #include "events.hh"
 
-#include "termbox.hh"
 #include "debug.hh"
 
 namespace Events {

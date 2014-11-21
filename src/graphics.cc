@@ -1,6 +1,6 @@
 #include "graphics.hh"
 
-#include <type_traits>
+#include "debug.hh"
 
 namespace Graphics {
 
@@ -24,14 +24,18 @@ position_t Positionable::get_y() const {
 
 Graphics::Graphics(std::shared_ptr<TB::Box> termbox) {
   this->box = termbox;
+  this->box->set_clear_attributes(CellConstants::WHITE, CellConstants::DEFAULT);
 }
 
-
-void Graphics::draw_block(Block b) {
-  this->box->put_cell(b.get_x(), b.get_y(), b.to_cell());
+void Graphics::Clear() {
+  this->box->clear();
 }
 
-void Graphics::draw_hline(TB::Cell c,
+void Graphics::draw_cell(position_t x, position_t y, const Cell::Cell c) {
+  this->box->put_cell(x, y, c);
+}
+
+void Graphics::draw_hline(Cell::Cell c,
                           TB::position_t y,
                           TB::position_t x,
                           TB::position_t length) {
@@ -43,7 +47,7 @@ void Graphics::draw_hline(TB::Cell c,
 }
 
 
-void Graphics::draw_vline(TB::Cell c,
+void Graphics::draw_vline(Cell::Cell c,
                           TB::position_t x,
                           TB::position_t y,
                           TB::position_t length) {
@@ -52,6 +56,16 @@ void Graphics::draw_vline(TB::Cell c,
     this->box->put_cell(x, yi, c);
   }
   this->box->present();
+}
+
+void Graphics::write_array(const position_t x,
+                           const position_t y,
+                           const position_t w,
+                           const std::vector<Cell::Cell> a) {
+  auto x_ = x;
+  auto y_ = y;
+  auto h = static_cast<position_t>(a.size()) / w;
+  this->box->blit(x_, y_, w, h, a);
 }
 
 void Graphics::write_strings(const position_t x,
@@ -68,7 +82,7 @@ void Graphics::write_string(TB::position_t x,
                             std::string s) {
   assert (nullptr != this->box);
   for(const auto c : s) {
-    TB::Cell cell(c);
+    Cell::Cell cell(c);
     cell.set_fg(this->get_fg());
     cell.set_bg(this->get_bg());
     this->box->put_cell(x, y, cell);
@@ -95,9 +109,9 @@ void Graphics::present() {
 }
 
 template<typename T>
-TB::Cell Graphics::get_default_cell(T c) {
+Cell::Cell Graphics::get_default_cell(T c) {
   assert (nullptr != this->box);
-  TB::Cell cell(c);
+  Cell::Cell cell(c);
   cell.set_fg(this->get_fg());
   cell.set_bg(this->get_bg());
   if (this->get_bold())

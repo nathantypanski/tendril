@@ -4,11 +4,12 @@
 
 #include "entity.hh"
 #include "graphics.hh"
-#include "termbox.hh"
+#include "cell.hh"
+#include "cell_constants.hh"
 
 namespace Player {
 
-using position_t = TB::position_t;
+using position_t = Cell::position_t;
 
 class Player : public Entity::Entity {
  public:
@@ -16,16 +17,16 @@ class Player : public Entity::Entity {
          position_t x,
          position_t y): Entity::Entity(g, x, y) {
     for(int i = 0; i < 12; i++) {
-      TB::Cell c;
-      c.set_bg(TB::WHITE);
+      Cell::Cell c;
+      c.set_bg(CellConstants::WHITE);
       this->cells_.push_back(c);
     }
+    this->width_ = 3;
   }
 
-  void tick();
+  void Tick();
  private:
-  std::vector<TB::Cell> cells_;
-  std::shared_ptr<Graphics::Graphics> g_;
+  position_t width_;
 };
 
 } // namespace Player

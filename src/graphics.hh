@@ -6,7 +6,9 @@
 #include <vector>
 #include <unistd.h>
 
-#include "termbox.hh"
+#include "box.hh"
+#include "cell.hh"
+#include "cell_constants.hh"
 
 #ifndef GRAPHICS_H_
 #define GRAPHICS_H_
@@ -14,6 +16,8 @@
 namespace Graphics {
 
 using position_t = TB::position_t;
+using modkey_t = uint8_t;
+using ch_t = uint32_t;
 
 class Positionable {
  public:
@@ -26,80 +30,31 @@ class Positionable {
   position_t y_;
 };
 
-class Block: public TB::Cell, public Positionable {
- public:
-  template<typename T>
-  Block(const T c,
-        const position_t x,
-        const position_t y) : TB::Cell(c), Positionable(x, y) {
-    static_assert(std::is_constructible<TB::Cell, T>::value,
-                  "Must be able to construct Cell from T");
-  }
-
-  Block(const Block &b): TB::Cell(b.ch_,
-                            b.fg_,
-                            b.bg_,
-                            b.ul_,
-                            b.bl_,
-                            b.rv_),
-                   Positionable(b.get_x(),
-                                b.get_y()) {}
-
-  TB::Cell to_cell() const {
-    TB::Cell c(this->ch_, this->fg_, this->bg_, this->ul_, this->bl_, this->rv_);
-    return c;
-  }
-
-};
-
-class Graphics: public TB::ToggleableAttributes {
+class Graphics: public CellAttributes::Toggleable {
 public:
   Graphics(std::shared_ptr<TB::Box> termbox);
 
-  void draw_block(const Block b);
+  void Clear();
 
-  void draw_hline(const TB::Cell c,
+  void draw_cell(position_t x,
+                 position_t y,
+                 const Cell::Cell b);
+
+  void draw_hline(const Cell::Cell c,
                   const position_t y,
                   const position_t x,
                   const position_t length);
 
-  // Draw a vertical line of TB::Cells at x, y.
-  void draw_vline(const TB::Cell c,
+  // Draw a vertical line of Cell::Cells at x, y.
+  void draw_vline(const Cell::Cell c,
                   const position_t x,
                   const position_t y,
                   const position_t length);
 
-  template<typename T, std::size_t SIZE>
   void write_array(const position_t x,
                    const position_t y,
                    const position_t w,
-                   const std::vector<T> a) {
-    std::array<T, SIZE> cells;
-    position_t x_ = x;
-    position_t y_ = y;
-    for(const auto& e: a) {
-      if (x_ % w == 0) {
-        x_ = x;
-      }
-      this->box->put_cell(x_, y_, TB::Cell(e));
-    }
-  }
-
-  template<typename T, std::size_t SIZE>
-  void write_array(const position_t x,
-                   const position_t y,
-                   const position_t w,
-                   const std::array<T, SIZE> a) {
-    std::array<T, SIZE> cells;
-    position_t x_ = x;
-    position_t y_ = y;
-    for(const auto& e: a) {
-      if (x_ % w == 0) {
-        x_ = x;
-      }
-      this->box->put_cell(x_, y_, TB::Cell(e));
-    }
-  }
+                   const std::vector<Cell::Cell> a);
 
   void write_strings(const position_t x,
                      const position_t y,
@@ -117,7 +72,7 @@ public:
 
   void present();
 
-  template<typename T> TB::Cell get_default_cell(const T c);
+  template<typename T> Cell::Cell get_default_cell(const T c);
 
   int get_width() const;
 

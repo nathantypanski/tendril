@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#define DEBUG(x) do { std::cerr << x; } while (0)
+#define CERR(x) do { std::cerr << x; } while (0)
 
 // http://stackoverflow.com/questions/12198449/cross-platform-macro-for-silencing-unused-variables-warning/12199209#12199209
 #define MON_Internal_UnusedStringify(macro_arg_string_literal) #macro_arg_string_literal
