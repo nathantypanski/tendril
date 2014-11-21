@@ -43,10 +43,13 @@ OBJS := $(addprefix $(OBJDIR)/,$(notdir $(SRCS:.cc=.o)))
 obj/%.o: src/%.cc
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-obj/%.o: src/cell/%.cc
+obj/cell/%.o: src/%.cc
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-PHONY: clean all main
+obj/entities/%.o: src/%.cc
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+PHONY: all main
 
 all: $(MAIN) $(OBJS)
 

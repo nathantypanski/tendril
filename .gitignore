@@ -1,3 +1,6 @@
 balloon
 obj/*
 skeleton/*
+src/GPATH
+src/GRTAGS
+src/GTAGS

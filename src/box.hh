@@ -30,7 +30,7 @@
 #include <vector>
 #include <stdlib.h>
 
-#include "cell/cell.hh"
+#include "cell.hh"
 
 namespace TB {
 
@@ -39,7 +39,7 @@ using ch_t = uint32_t;
 
 using color_t = Cell::color_t;
 using character_t = Cell::character_t;
-using position_t = Cell::position_t;
+using position_t = int;
 
 
 enum class EventType {

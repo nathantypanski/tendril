@@ -1,10 +1,9 @@
-#include "cell/cell.hh"
+#include "cell.hh"
 
 namespace Cell {
 
 using color_t = uint16_t;
 using character_t = uint32_t;
-using position_t = int;
 
 Cell::Cell(): Attributes::Toggleable() {
   this->ch_ = ' ';

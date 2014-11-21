@@ -3,8 +3,8 @@
 
 #include <type_traits>
 
-#include "cell/constants.hh"
-#include "cell/attributes.hh"
+#include "cell_constants.hh"
+#include "cell_attributes.hh"
 
 namespace Cell {
 
