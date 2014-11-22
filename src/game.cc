@@ -17,6 +17,9 @@ void Game::Launch() {
   auto enemy = std::shared_ptr<Enemy::Enemy>
       (new Enemy::Enemy(this->graphics_, 20, 20));
   this->entities_.insert(enemy);
+  this->future_input_ = std::async(std::launch::async,
+                                   Keyboard::poll_event,
+                                   this->box_);
   this->MainLoop();
 }
 
@@ -33,33 +36,56 @@ void Game::MovePlayer(Keypress keypress) {
   auto key = keypress.key();
   // auto modkey = keypress.modkey();
   auto ch = keypress.ch();
-  if (Keyboard::Constants::KEY_ESC == ch) { // user quit
+  if (Keyboard::Constants::KEY_ESC == key) { // user quit
     this->running_ = false;
     return;
   }
-  if ('h' == key) {
+  if ('h' == ch) {
     this->player_->MoveLeft();
   }
-  if ('j' == key) {
+  if ('j' == ch) {
     this->player_->MoveDown();
   }
-  if ('k' == key) {
+  if ('k' == ch) {
     this->player_->MoveUp();
   }
-  if ('l' == key) {
+  if ('l' == ch) {
     this->player_->MoveRight();
   }
   Cell::Cell cell(key);
   this->graphics_->draw_cell(1, 1, cell);
 }
 
+void Game::HandleUserInput(KeyEvent usr_input) {
+  switch(usr_input.tag) {
+    case KeyEvent::Some: {
+      this->MovePlayer(usr_input.key);
+      break;
+    }
+    case KeyEvent::None: {
+      break;
+    }
+  }
+}
+
+void Game::CheckForInput() {
+  switch (this->future_input_.wait_for(this->delay_)) {
+    case deferred: { break; }
+    case timeout: { break; }
+    case ready: {
+      auto usr_input = future_input_.get();
+      this->HandleUserInput(usr_input);
+      future_input_ = std::async(std::launch::async,
+                                 Keyboard::poll_event,
+                                 this->box_);
+      break;
+    }
+  }
+}
+
 void Game::MainLoop() {
   while(this->running_) {
-    Keyboard::KeyEvent ev = this->user_->GetInput();
-    if (Keyboard::KeyEvent::Some == ev.tag) {
-      CERR ("got input");
-      MovePlayer(ev.key);
-    }
+    this->CheckForInput();
     this->Tick();
   }
 }

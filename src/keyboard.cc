@@ -4,10 +4,6 @@
 
 namespace Keyboard {
 
-using std::future_status::ready;
-using std::future_status::timeout;
-using std::future_status::deferred;
-
 Keypress::Keypress(tb_event ev) {
   assert (ev.type == TB_EVENT_KEY);
   this->modkey_ = ev.mod;

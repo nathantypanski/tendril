@@ -11,8 +11,12 @@
 
 namespace Game {
 
-using UserInput = Keyboard::User<long, std::ratio<1, 1000>>;
+using std::future_status::ready;
+using std::future_status::timeout;
+using std::future_status::deferred;
+
 using Keyboard::Keypress;
+using Keyboard::KeyEvent;
 
 class Game {
  public:
@@ -30,22 +34,22 @@ class Game {
         (new Player::Player(this->graphics_,
                             10,
                             10));
-
-    this->user_ = std::unique_ptr<UserInput>
-        (new UserInput(this->box_,
-                       std::chrono::milliseconds(10000)));
     this->entities_.insert(this->player_);
+    this->delay_ = std::chrono::milliseconds(5);
   }
 
   void Launch();
   void MovePlayer(Keypress keypress);
+  void HandleUserInput(Keyboard::KeyEvent usr_input);
+  void CheckForInput();
   void Tick();
 
  private:
   void MainLoop();
   bool running_;
   uint ticks_;
-  std::unique_ptr<UserInput> user_;
+std::chrono::duration<long, std::milli> delay_;
+  std::future<Keyboard::KeyEvent> future_input_;
   std::shared_ptr<Player::Player> player_;
   std::unordered_set<std::shared_ptr<Entity::Entity>> entities_;
   std::shared_ptr<Box::Box> box_;
