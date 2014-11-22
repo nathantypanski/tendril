@@ -33,6 +33,6 @@ int main(int argc, char** argv) {
   MONUnusedParameter(argc);
   MONUnusedParameter(argv);
   Game::Game game;
-  game.launch();
+  game.Launch();
   return 0;
 }
