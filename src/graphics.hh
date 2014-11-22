@@ -15,16 +15,15 @@
 
 namespace Graphics {
 
-using position_t = TB::position_t;
-using modkey_t = uint8_t;
-using ch_t = uint32_t;
+using ::Box::position_t;
 
 class Positionable {
  public:
   Positionable(const position_t x, const position_t y);
   Positionable(const Positionable &p);
-  position_t get_x() const;
-  position_t get_y() const;
+  virtual position_t get_x() const;
+  virtual position_t get_y() const;
+  virtual ~Positionable() {}
  private:
   position_t x_;
   position_t y_;
@@ -32,7 +31,7 @@ class Positionable {
 
 class Graphics: public Cell::Attributes::Toggleable {
 public:
-  Graphics(std::shared_ptr<TB::Box> termbox);
+  Graphics(std::shared_ptr<Box::Box> termbox);
 
   void Clear();
 
@@ -69,18 +68,19 @@ public:
   void teletype_text(const position_t x,
                      const position_t y,
                      const std::string s);
-
   void present();
-
+  inline position_t get_width() const {
+    assert (nullptr != this->box);
+    return box->get_height();
+  }
+  inline position_t get_height() const {
+    assert (nullptr != this->box);
+    return box->get_width();
+  }
+ protected:
   template<typename T> Cell::Cell get_default_cell(const T c);
-
-  int get_width() const;
-
-  int get_height() const;
-
 private:
-
-  std::shared_ptr<TB::Box> box;
+  std::shared_ptr<Box::Box> box;
 };
 
 } // namespace Graphics

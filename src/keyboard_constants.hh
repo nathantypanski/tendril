@@ -8,6 +8,8 @@ namespace Keyboard {
 namespace Constants {
 
 using key_t = uint16_t;
+using modkey_t = uint8_t;
+using ch_t = uint32_t;
 
 static const key_t KEY_F1 = TB_KEY_F1; // (0xFFFF-0)
 static const key_t KEY_F2 = TB_KEY_F2; // (0xFFFF-1)
@@ -64,12 +66,12 @@ static const key_t KEY_CTRL_X = TB_KEY_CTRL_X; // 0x18
 static const key_t KEY_CTRL_Y = TB_KEY_CTRL_Y; // 0x19
 static const key_t KEY_CTRL_Z = TB_KEY_CTRL_Z; // 0x1A
 static const key_t KEY_ESC = TB_KEY_ESC; // 0x1B
-static const key_t KEY_CTRL_LSQ_BRACKET = TB_KEY_CTRL_LSQ_BRACKET; // 0x1B /* clash with 'ESC'static const key_t TB::
+static const key_t KEY_CTRL_LSQ_BRACKET = TB_KEY_CTRL_LSQ_BRACKET; // 0x1B /* clash with 'ESC'
 static const key_t KEY_CTRL_3 = TB_KEY_CTRL_3; // 0x1B /* clash with 'ESC' */
 static const key_t KEY_CTRL_4 = TB_KEY_CTRL_4; // 0x1C
 static const key_t KEY_CTRL_BACKSLASH = TB_KEY_CTRL_BACKSLASH; // 0x1C /* clash with 'CTRL_4' */
 static const key_t KEY_CTRL_5 = TB_KEY_CTRL_5; // 0x1D
-static const key_t KEY_CTRL_RSQ_BRACKET = TB_KEY_CTRL_RSQ_BRACKET; // 0x1D /* clash with 'CTRLstatic const key_t TB::*/ */
+static const key_t KEY_CTRL_RSQ_BRACKET = TB_KEY_CTRL_RSQ_BRACKET; // 0x1D  clash with 'CTRL'
 static const key_t KEY_CTRL_6 = TB_KEY_CTRL_6; // 0x1E
 static const key_t KEY_CTRL_7 = TB_KEY_CTRL_7; // 0x1F
 static const key_t KEY_CTRL_SLASH = TB_KEY_CTRL_SLASH; // 0x1F /* clash with 'CTRL_7' */

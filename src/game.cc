@@ -1,28 +1,37 @@
 #include "game.hh"
 
 #include <iostream>
+#include <chrono>
 #include "intro.hh"
+#include "enemy.hh"
 #include "keyboard_constants.hh"
 
 namespace Game {
 
+using std::future_status::ready;
+using std::future_status::timeout;
+using std::future_status::deferred;
+
 void Game::launch() {
   this->running_ = true;
-  ::draw_intro(this->graphics_);
-  this->player_->Tick();
-  this->graphics_->present();
-  while(this->running_) {
-    this->handle_user_input();
-  }
+  //::draw_intro(this->graphics_);
+  auto enemy = std::shared_ptr<Enemy::Enemy>
+      (new Enemy::Enemy(this->graphics_, 20, 20));
+  this->entities_.insert(enemy);
+  this->main_loop();
   // sleep(1);
 }
 
-void Game::handle_user_input() {
-  auto input = std::async(Events::poll_event,
-                          this->box_);
+void Game::Tick() {
   this->graphics_->Clear();
-  input.wait();
-  auto usr_input = input.get();
+  for(auto e : this->entities_) {
+    e->Tick();
+  }
+  this->graphics_->present();
+  this->ticks_++;
+}
+
+void Game::handle_user_input(KeyEvent usr_input) {
   switch(usr_input.tag) {
     case Events::KeyEvent::Some: {
       auto c = usr_input.key.get_ch();
@@ -45,16 +54,38 @@ void Game::handle_user_input() {
       }
       Cell::Cell cell(c);
       this->graphics_->draw_cell(1, 1, cell);
-      this->player_->Tick();
-      this->graphics_->present();
-      this->ticks_++;
       break;
     }
     case Events::KeyEvent::None: {
       break;
     }
   }
-  this->graphics_->present();
+}
+
+void Game::main_loop() {
+  auto future_input = std::async(std::launch::async,
+                                 Events::poll_event,
+                                 this->box_);
+  while(this->running_) {
+    this->Tick();
+    switch (future_input.wait_for(std::chrono::milliseconds(10000))) {
+      case deferred: {
+        break;
+      }
+      case timeout: {
+        break;
+      }
+      case ready: {
+        auto usr_input = future_input.get();
+        this->handle_user_input(usr_input);
+        future_input = std::async(std::launch::async,
+                                  Events::poll_event,
+                                  this->box_);
+
+        break;
+      }
+    }
+  }
 }
 
 } // namespace Game

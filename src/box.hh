@@ -21,8 +21,8 @@
 //
 // A dead-simple class-based wrapper around termbox.
 
-#ifndef TERMBOX_H_
-#define TERMBOX_H_
+#ifndef BOX_H_
+#define BOX_H_
 
 #include <termbox.h>
 
@@ -31,16 +31,12 @@
 #include <stdlib.h>
 
 #include "cell.hh"
+#include "keyboard_constants.hh"
 
-namespace TB {
+namespace Box {
 
-using modkey_t = uint8_t;
-using ch_t = uint32_t;
-
-using color_t = Cell::color_t;
-using character_t = Cell::character_t;
 using position_t = int;
-
+using ::Cell::Constants::Colors::color_t;
 
 enum class EventType {
   Key,
@@ -55,31 +51,18 @@ enum class OutputMode {
   Output_Grayscale
 };
 
-class Keypress {
- public:
-  Keypress(tb_event ev);
-  key_t get_key() const;
-  modkey_t get_mod() const;
-  ch_t get_ch() const;
- private:
-  modkey_t mod_;
-  key_t key_;
-  ch_t ch_;
-};
-
 class Box {
  public:
   Box();
   ~Box();
   void set_clear_attributes(color_t fg, color_t bg);
-  int get_width();
-  int get_height();
+  position_t get_width();
+  position_t get_height();
   void clear();
   void present();
   void set_cursor(int cx, int cy);
   void hide_cursor();
   void put_cell(int x, int y, const Cell::Cell &cell);
-  // void blit(int x, int y, int w, int h, const struct tb_cell *cells);
   void blit(int x, int y, int w, int h, std::vector<Cell::Cell> cells);
   int select_input_mode(int mode);
   int select_output_mode(OutputMode mode);
@@ -89,4 +72,4 @@ class Box {
 
 } // namespace Termbox
 
-#endif // TERMBOX_H_
+#endif // BOX_H_

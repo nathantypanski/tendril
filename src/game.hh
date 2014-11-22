@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <future>
+#include <unordered_set>
 
 #include "box.hh"
 #include "player.hh"
@@ -11,25 +12,31 @@
 
 namespace Game {
 
+using Events::KeyEvent;
+
 class Game {
  public:
   Game() {
     this->running_ = false;
     this->ticks_ = 0;
-    this->box_ = std::shared_ptr<TB::Box>(new TB::Box);
+    this->box_ = std::shared_ptr<Box::Box>(new Box::Box);
     this->graphics_ = std::shared_ptr<Graphics::Graphics>(new Graphics::Graphics(this->box_));
-    this->player_ = std::unique_ptr<Player::Player> (new Player::Player(this->graphics_,
+    this->player_ = std::shared_ptr<Player::Player> (new Player::Player(this->graphics_,
                                                                         10,
                                                                         10));
+    this->entities_.insert(this->player_);
   }
   void launch();
-  void handle_user_input();
+  void Tick();
+  void handle_user_input(KeyEvent usr_input);
 
  private:
+  void main_loop();
   bool running_;
   uint ticks_;
-  std::unique_ptr<Player::Player> player_;
-  std::shared_ptr<TB::Box> box_;
+  std::shared_ptr<Player::Player> player_;
+  std::unordered_set<std::shared_ptr<Entity::Entity>> entities_;
+  std::shared_ptr<Box::Box> box_;
   std::shared_ptr<Graphics::Graphics> graphics_;
 };
 

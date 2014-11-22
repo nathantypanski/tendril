@@ -2,27 +2,9 @@
 #include "box.hh"
 
 #include "debug.hh"
+#include "keyboard.hh"
 
-namespace TB {
-
-Keypress::Keypress(tb_event ev) {
-  assert (ev.type == TB_EVENT_KEY);
-  this->mod_ = ev.mod;
-  this->key_ = ev.key;
-  this->ch_ = ev.ch;
-}
-
-key_t Keypress::get_key() const {
-  return this->key_;
-}
-
-modkey_t Keypress::get_mod() const {
-  return this->mod_;
-}
-
-ch_t Keypress::get_ch() const {
-  return this->ch_;
-}
+namespace Box {
 
 Box::Box() {
   if (tb_init() < 0) {

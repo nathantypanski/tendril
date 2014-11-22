@@ -4,19 +4,19 @@ namespace Cell {
 
 namespace Attributes {
 
-color_t Toggleable::get_fg() const {
+Constants::Colors::color_t Toggleable::get_fg() const {
   return this->fg_;
 }
 
-void Toggleable::set_fg(color_t foreground) {
+void Toggleable::set_fg(Constants::Colors::color_t foreground) {
   this->fg_ = foreground;
 }
 
-color_t Toggleable::get_bg() const {
+Constants::Colors::color_t Toggleable::get_bg() const {
   return this->bg_;
 }
 
-void Toggleable::set_bg(color_t background) {
+void Toggleable::set_bg(Constants::Colors::color_t background) {
   this->bg_ = background;
 }
 
@@ -57,11 +57,11 @@ void Toggleable::unset_reverse() {
 }
 
 Toggleable::Toggleable() {
-  this->fg_ = Cell::Constants::CELL_DEFAULT_FG;
-  this->bg_ = Cell::Constants::CELL_DEFAULT_BG;
-  this->ul_ = Cell::Constants::CELL_DEFAULT_UL;
-  this->bl_ = Cell::Constants::CELL_DEFAULT_BL;
-  this->rv_ = Cell::Constants::CELL_DEFAULT_RV;
+  this->fg_ = Constants::Colors::CELL_DEFAULT_FG;
+  this->bg_ = Constants::Colors::CELL_DEFAULT_BG;
+  this->ul_ = Constants::Properties::CELL_DEFAULT_UL;
+  this->bl_ = Constants::Properties::CELL_DEFAULT_BL;
+  this->rv_ = Constants::Properties::CELL_DEFAULT_RV;
 }
 
 } // namespace Attributes

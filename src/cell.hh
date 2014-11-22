@@ -8,10 +8,12 @@
 
 namespace Cell {
 
-using color_t = Constants::color_t;
+using Constants::Colors::color_t;
 using character_t = uint32_t;
-using position_t = int;
 
+// A Cell contains all the attributes of a block in a terminal.
+//
+// Cells do not have any specification of position.
 class Cell: public Attributes::Toggleable {
  public:
   Cell();
@@ -26,19 +28,19 @@ class Cell: public Attributes::Toggleable {
   }
 
   template<typename T>
-  Cell(T c, color_t fg, color_t bg): Attributes::Toggleable()  {
+  Cell(T c, Constants::Colors::color_t fg, Constants::Colors::color_t bg): Attributes::Toggleable()  {
     static_assert(std::is_convertible<T, character_t>::value,
                   "T must be convertible into a character");
     this->ch_ = static_cast<character_t>(c);
     this->fg_ = fg;
     this->bg_ = bg;
-    this->ul_ = Constants::CELL_DEFAULT_UL;
-    this->bl_ = Constants::CELL_DEFAULT_BL;
-    this->rv_ = Constants::CELL_DEFAULT_RV;
+    this->ul_ = Constants::Properties::CELL_DEFAULT_UL;
+    this->bl_ = Constants::Properties::CELL_DEFAULT_BL;
+    this->rv_ = Constants::Properties::CELL_DEFAULT_RV;
   }
 
   template<typename T>
-  Cell(T c, color_t fg, color_t bg, bool ul, bool bl, bool rv) {
+  Cell(T c, Constants::Colors::color_t fg, Constants::Colors::color_t bg, bool ul, bool bl, bool rv) {
     static_assert(std::is_convertible<T, character_t>::value,
                   "T must be convertible into a character");
     this->ch_ = static_cast<character_t>(c);

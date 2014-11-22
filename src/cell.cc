@@ -2,8 +2,7 @@
 
 namespace Cell {
 
-using color_t = uint16_t;
-using character_t = uint32_t;
+using Constants::Properties::character_t;
 
 Cell::Cell(): Attributes::Toggleable() {
   this->ch_ = ' ';
@@ -35,16 +34,16 @@ const Cell::operator tb_cell() const {
   cell.ch = this->ch_;
   cell.fg = this->get_fg();
   if (this->get_underline()) {
-    cell.fg |= Constants::UNDERLINE;
-    cell.bg |= Constants::UNDERLINE;
+    cell.fg |= Constants::Properties::UNDERLINE;
+    cell.bg |= Constants::Properties::UNDERLINE;
   }
   if (this->get_bold()) {
-    cell.fg |= Constants::BOLD;
-    cell.bg |= Constants::BOLD;
+    cell.fg |= Constants::Properties::BOLD;
+    cell.bg |= Constants::Properties::BOLD;
   }
   if (this->get_reverse()) {
-    cell.fg |= Constants::REVERSE;
-    cell.bg |= Constants::REVERSE;
+    cell.fg |= Constants::Properties::REVERSE;
+    cell.bg |= Constants::Properties::REVERSE;
   }
   cell.bg = this->get_bg();
   return cell;

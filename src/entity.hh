@@ -1,3 +1,5 @@
+#ifndef ENTITY_H_
+#define ENTITY_H_
 
 #include <memory>
 
@@ -7,7 +9,7 @@
 
 namespace Entity {
 
-using position_t = TB::position_t;
+using position_t = Box::position_t;
 
 class Entity {
  public:
@@ -32,3 +34,5 @@ class Entity {
 };
 
 } // namespace Entity
+
+#endif /* ENTITY_H_ */

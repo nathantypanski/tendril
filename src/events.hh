@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "box.hh"
+#include "keyboard.hh"
 
 namespace Events {
 
@@ -11,12 +12,12 @@ struct KeyEvent {
   enum Class {None, Some} tag;
   union {
     char none;
-    TB::Keypress key;
+    Keyboard::Keypress key;
   };
 };
 
 
-KeyEvent poll_event(std::shared_ptr<TB::Box> box);
+KeyEvent poll_event(std::shared_ptr<Box::Box> box);
 
 
 } // namespace Events

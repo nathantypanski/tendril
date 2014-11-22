@@ -7,14 +7,12 @@ namespace Cell {
 
 namespace Attributes {
 
-using color_t = Constants::color_t;
-
 class Toggleable {
  public:
-  color_t get_fg() const;
-  void set_fg(color_t foreground);
-  color_t get_bg() const;
-  void set_bg(color_t background);
+  Constants::Colors::color_t get_fg() const;
+  void set_fg(Constants::Colors::color_t foreground);
+  Constants::Colors::color_t get_bg() const;
+  void set_bg(Constants::Colors::color_t background);
   bool get_bold() const;
   void set_bold();
   void unset_bold();
@@ -26,8 +24,8 @@ class Toggleable {
   void unset_reverse();
  protected:
   Toggleable();
-  color_t fg_;
-  color_t bg_;
+  Constants::Colors::color_t fg_;
+  Constants::Colors::color_t bg_;
   bool ul_;
   bool bl_;
   bool rv_;
