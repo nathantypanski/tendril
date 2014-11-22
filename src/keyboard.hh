@@ -11,6 +11,7 @@
 #include "box.hh"
 #include "guard.hh"
 #include "keyboard_constants.hh"
+#include "debug.hh"
 
 namespace Keyboard {
 
@@ -65,9 +66,12 @@ class User {
   void HandleUserInput(KeyEvent usr_input) {
     switch(usr_input.tag) {
       case KeyEvent::Some: {
-        this->queue_.Get([&] (std::queue<Keypress> queue) -> void {
+        this->queue_.Get(
+          std::function<void (std::queue<Keyboard::Keypress>)>(
+            [&] (std::queue<Keypress> queue) -> void {
             queue.push(usr_input.key);
-          }
+            CERR ("<PUSHED>");
+            })
         );
         break;
       }
@@ -79,13 +83,12 @@ class User {
 
   KeyEvent GetInput() {
     KeyEvent ev = {KeyEvent::None, {'\0'}};
-    if (! this->queue_.Get(std::function<bool(std::queue<Keyboard::Keypress>)> (
-        [&] (std::queue<Keypress> queue) -> bool {
-              return queue.empty();
-        }))) {
+    if (! this->queue_.Get(std::function<bool(const std::queue<Keyboard::Keypress>)> (
+        [&] (const std::queue<Keypress> queue) -> bool { return queue.empty(); }))) {
       Keyboard::Keypress result = (this->queue_.Get(
           std::function<Keyboard::Keypress (std::queue<Keyboard::Keypress>)>(
           [&] (std::queue<Keypress> queue) {
+            CERR ("<POPPING>");
             auto e = queue.front();
             queue.pop();
             return e;
@@ -101,7 +104,6 @@ class User {
                                    poll_event,
                                    this->box_);
     while(this->running_) {
-      this->Tick();
       switch (future_input.wait_for(this->delay_)) {
         case deferred: {
           break;
@@ -111,7 +113,7 @@ class User {
         }
         case ready: {
           auto usr_input = future_input.get();
-          this->handle_user_input(usr_input);
+          this->HandleUserInput(usr_input);
           future_input = std::async(std::launch::async,
                                     poll_event,
                                     this->box_);

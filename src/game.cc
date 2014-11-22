@@ -3,6 +3,7 @@
 #include "intro.hh"
 #include "enemy.hh"
 #include "keyboard_constants.hh"
+#include "debug.hh"
 
 namespace Game {
 
@@ -53,9 +54,10 @@ void Game::MovePlayer(Keypress keypress) {
 }
 
 void Game::MainLoop() {
-  Keyboard::KeyEvent ev = this->user_->GetInput();
   while(this->running_) {
+    Keyboard::KeyEvent ev = this->user_->GetInput();
     if (Keyboard::KeyEvent::Some == ev.tag) {
+      CERR ("got input");
       MovePlayer(ev.key);
     }
     this->Tick();

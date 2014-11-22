@@ -2,6 +2,7 @@
 #define GUARD_H_
 
 #include <functional>
+#include <type_traits>
 #include <mutex>
 
 namespace Guard {
@@ -20,6 +21,9 @@ class Guard {
   // of arguments.
   template<class R, class... Args >
   R Get(std::function<R (T, Args...)> f, Args ... args) {
+    static_assert(noexcept(std::is_nothrow_move_constructible<R>::value
+                           && std::is_nothrow_move_assignable<R>::value),
+                  "R may throw");
     std::lock_guard<std::mutex> lock(this->mutex_);
     return f(this->t_, args... );
   }
