@@ -22,7 +22,7 @@ class Player: public Entity::Entity {
       std::vector<::Cell::Cell> v;
       for(int j = 0; j < 3; j++) {
         Cell::Cell c;
-        c.set_bg(Cell::Constants::Colors::WHITE);
+        c.bg(Cell::Constants::Colors::WHITE);
         v.push_back(c);
       }
       this->cells_.push_back(v);

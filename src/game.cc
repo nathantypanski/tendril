@@ -18,7 +18,7 @@ void Game::Launch() {
       (new Enemy::Enemy(this->graphics_, 20, 20));
   this->entities_.insert(enemy);
   this->future_input_ = std::async(std::launch::async,
-                                   Keyboard::poll_event,
+                                   Keyboard::PollEvent,
                                    this->box_);
   this->MainLoop();
 }
@@ -35,7 +35,7 @@ void Game::Tick() {
       ++i;
     }
   }
-  this->graphics_->present();
+  this->graphics_->Present();
   this->ticks_++;
 }
 
@@ -60,7 +60,7 @@ void Game::MovePlayer(Keypress keypress) {
     this->player_->MoveRight();
   }
   Cell::Cell cell(key);
-  this->graphics_->draw_cell(1, 1, cell);
+  this->graphics_->DrawCell(1, 1, cell);
 }
 
 void Game::HandleUserInput(KeyEvent usr_input) {
@@ -83,7 +83,7 @@ void Game::CheckForInput() {
       auto usr_input = future_input_.get();
       this->HandleUserInput(usr_input);
       future_input_ = std::async(std::launch::async,
-                                 Keyboard::poll_event,
+                                 Keyboard::PollEvent,
                                  this->box_);
       break;
     }

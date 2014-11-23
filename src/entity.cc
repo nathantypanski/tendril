@@ -23,7 +23,7 @@ void Entity::Tick() {
 }
 
 void Entity::Draw() {
-  this->g_->write_vec2(this->x_, this->y_, this->cells_);
+  this->g_->WriteVec2(this->x_, this->y_, this->cells_);
 }
 
 void Entity::Die() {

@@ -20,9 +20,18 @@ class Positionable {
  public:
   Positionable(const position_t x, const position_t y);
   Positionable(const Positionable &p);
-  virtual position_t get_x() const;
-  virtual position_t get_y() const;
-  virtual ~Positionable() {}
+  inline position_t x() const {
+    return this->x_;
+  }
+  inline void x(position_t new_x) {
+    this->x_ = new_x;
+  }
+  inline position_t y() const {
+    return this->y_;
+  }
+  inline void y(position_t new_y) {
+    this->y_ = new_y;
+  }
  private:
   position_t x_;
   position_t y_;
@@ -34,54 +43,57 @@ public:
 
   void Clear();
 
-  void draw_cell(position_t x,
+  void DrawCell(position_t x,
                  position_t y,
                  const Cell::Cell b);
 
-  void draw_hline(const Cell::Cell c,
+  void DrawHline(const Cell::Cell c,
                   const position_t y,
                   const position_t x,
                   const position_t length);
 
   // Draw a vertical line of Cell::Cells at x, y.
-  void draw_vline(const Cell::Cell c,
+  void DrawVline(const Cell::Cell c,
                   const position_t x,
                   const position_t y,
                   const position_t length);
 
-  void write_vec2(const position_t x,
+  void WriteVec2(const position_t x,
                   const position_t y,
                   const std::vector<std::vector<Cell::Cell>> a);
 
-  void write_vec(const position_t x,
+  void WriteVec(const position_t x,
                  const position_t y,
                  const std::vector<Cell::Cell> a);
 
-  void write_strings(const position_t x,
+  void WriteStrings(const position_t x,
                      const position_t y,
                      const std::vector<std::string> sv);
 
   // Write a string to the screen at location x, y.
-  void write_string(const position_t x,
+  void WriteString(const position_t x,
                     const position_t y,
                     const std::string s);
 
   // Write some text to the screen, key-by-key, with a "typewriter" effect.
-  void teletype_text(const position_t x,
-                     const position_t y,
-                     const std::string s);
+  void TeletypeText(const position_t x,
+                    const position_t y,
+                    const std::string s);
 
-  void present();
+  void Present();
+
   inline position_t get_width() const {
     assert (nullptr != this->box);
-    return box->get_width();
+    return box->width();
   }
+
   inline position_t get_height() const {
     assert (nullptr != this->box);
-    return box->get_height();
+    return box->height();
   }
+
  protected:
-  template<typename T> Cell::Cell get_default_cell(const T c);
+  template<typename T> Cell::Cell GetDefaultCell(const T c);
 private:
   std::shared_ptr<Box::Box> box;
 };

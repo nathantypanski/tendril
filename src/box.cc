@@ -10,52 +10,52 @@ Box::Box() {
   if (tb_init() < 0) {
     exit(1);
   }
-  this->clear();
+  this->Clear();
 }
 
 Box::~Box() {
   tb_shutdown();
 }
 
-void Box::set_clear_attributes(color_t fg, color_t bg) {
+void Box::SetClearAttributes(color_t fg, color_t bg) {
   tb_set_clear_attributes(fg, bg);
 }
 
-void Box::clear() {
+void Box::Clear() {
   tb_clear();
 }
 
-void Box::present() {
+void Box::Present() {
   tb_present();
 }
 
-void Box::set_cursor(int cx, int cy) {
+void Box::SetCursor(int cx, int cy) {
   tb_set_cursor(cx, cy);
 }
 
-void Box::hide_cursor() {
+void Box::HideCursor() {
   tb_set_cursor(TB_HIDE_CURSOR, TB_HIDE_CURSOR);
 }
 
-void Box::put_cell(int x, int y, const Cell::Cell &cell) {
+void Box::PutCell(int x, int y, const Cell::Cell &cell) {
   const auto tb = tb_cell(cell);
   tb_put_cell(x, y, &tb);
 }
 
-void Box::blit(int x, int y, int w, int h, std::vector<Cell::Cell> cells) {
+void Box::Blit(int x, int y, int w, int h, std::vector<Cell::Cell> cells) {
   std::vector<tb_cell> tb(cells.begin(), cells.end());
   tb_blit(x, y, w, h, tb.data());
 }
 
-int Box::select_input_mode(int mode) {
+int Box::SelectInputMode(int mode) {
   return tb_select_input_mode(mode);
 }
 
-int Box::select_output_mode(OutputMode mode) {
+int Box::SelectOutputMode(OutputMode mode) {
   return tb_select_output_mode(static_cast<int>(mode));
 }
 
-EventType Box::peek_event(struct tb_event *event, const int timeout) {
+EventType Box::PeekEvent(struct tb_event *event, const int timeout) {
   auto ev = tb_peek_event(event, timeout);
   if (ev == TB_EVENT_KEY) {
     return EventType::Key;
@@ -68,7 +68,7 @@ EventType Box::peek_event(struct tb_event *event, const int timeout) {
   }
 }
 
-EventType Box::poll_event(struct tb_event *event) {
+EventType Box::PollEvent(struct tb_event *event) {
   switch (tb_poll_event(event)) {
       case TB_EVENT_KEY: {
         return EventType::Key;

@@ -9,19 +9,36 @@ namespace Attributes {
 
 class Toggleable {
  public:
-  Constants::Colors::color_t get_fg() const;
-  void set_fg(Constants::Colors::color_t foreground);
-  Constants::Colors::color_t get_bg() const;
-  void set_bg(Constants::Colors::color_t background);
-  bool get_bold() const;
-  void set_bold();
-  void unset_bold();
-  bool get_underline() const;
-  void set_underline();
-  void unset_underline();
-  bool get_reverse() const;
-  void set_reverse();
-  void unset_reverse();
+  inline Constants::Colors::color_t fg() const {
+    return this->fg_;
+  }
+  inline void fg(Constants::Colors::color_t foreground) {
+    this->fg_ = foreground;
+  }
+  inline Constants::Colors::color_t bg() const {
+    return this->bg_;
+  }
+  inline void bg(Constants::Colors::color_t background) {
+    this->bg_ = background;
+  }
+  inline bool bold() const {
+    return this->bl_;
+  }
+  inline void bold(bool attr) {
+    this->bl_ = attr;
+  }
+  inline bool underline() const {
+    return this->ul_;
+  }
+  inline void underline(bool attr) {
+    this->ul_ = attr;
+  }
+  inline bool reverse() const {
+    return this->rv_;
+  }
+  inline void reverse(bool attr) {
+    this->rv_ = attr;
+  }
  protected:
   Toggleable();
   Constants::Colors::color_t fg_;

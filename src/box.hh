@@ -55,31 +55,31 @@ class Box {
  public:
   Box();
   ~Box();
-  void set_clear_attributes(color_t fg, color_t bg);
-  inline position_t get_width() {
+  void SetClearAttributes(color_t fg, color_t bg);
+  inline position_t width() {
     auto width = tb_width();
     assert (width >= 0);
     return width;
   }
-  inline position_t get_height() {
+  inline position_t height() {
     auto height = tb_height();
     assert (height >= 0);
     return height;
   }
-  void clear();
-  void present();
-  void set_cursor(int cx, int cy);
-  void hide_cursor();
-  void put_cell(int x, int y, const Cell::Cell &cell);
-  void blit(position_t x,
+  void Clear();
+  void Present();
+  void SetCursor(int cx, int cy);
+  void HideCursor();
+  void PutCell(int x, int y, const Cell::Cell &cell);
+  void Blit(position_t x,
             position_t y,
             position_t w,
             position_t h,
             std::vector<Cell::Cell> cells);
-  int select_input_mode(int mode);
-  int select_output_mode(OutputMode mode);
-  EventType peek_event(struct tb_event *event, int timeout);
-  EventType poll_event(struct tb_event *event);
+  int SelectInputMode(int mode);
+  int SelectOutputMode(OutputMode mode);
+  EventType PeekEvent(struct tb_event *event, int timeout);
+  EventType PollEvent(struct tb_event *event);
 };
 
 } // namespace Termbox

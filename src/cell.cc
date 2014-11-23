@@ -10,11 +10,11 @@ Cell::Cell(): Attributes::Toggleable() {
 
 Cell::Cell(const Cell &c): Attributes::Toggleable() {
   this->ch_ = c.ch_;
-  this->fg_ = c.get_fg();
-  this->bg_ = c.get_bg();
-  this->ul_ = c.get_underline();
-  this->bl_ = c.get_bold();
-  this->rv_ = c.get_reverse();
+  this->fg_ = c.fg();
+  this->bg_ = c.bg();
+  this->ul_ = c.underline();
+  this->bl_ = c.bold();
+  this->rv_ = c.reverse();
 }
 
 character_t Cell::ch() const {
@@ -34,30 +34,30 @@ const Cell::operator char() const {
 const Cell::operator tb_cell() const {
   tb_cell cell;
   cell.ch = this->ch_;
-  cell.fg = this->get_fg();
-  if (this->get_underline()) {
+  cell.fg = this->fg();
+  if (this->underline()) {
     cell.fg |= Constants::Properties::UNDERLINE;
     cell.bg |= Constants::Properties::UNDERLINE;
   }
-  if (this->get_bold()) {
+  if (this->bold()) {
     cell.fg |= Constants::Properties::BOLD;
     cell.bg |= Constants::Properties::BOLD;
   }
-  if (this->get_reverse()) {
+  if (this->reverse()) {
     cell.fg |= Constants::Properties::REVERSE;
     cell.bg |= Constants::Properties::REVERSE;
   }
-  cell.bg = this->get_bg();
+  cell.bg = this->bg();
   return cell;
 }
 
 bool Cell::operator==(const Cell &other) {
   return this->ch() == other.ch()
-      && this->get_fg() == other.get_fg()
-      && this->get_bg() == other.get_bg()
-      && this->get_bold() == other.get_bold()
-      && this->get_underline() == other.get_underline()
-      && this->get_reverse() == other.get_reverse();
+      && this->fg() == other.fg()
+      && this->bg() == other.bg()
+      && this->bold() == other.bold()
+      && this->underline() == other.underline()
+      && this->reverse() == other.reverse();
 }
 
 } // namespace Cell
