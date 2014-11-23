@@ -13,7 +13,15 @@ using character_t = uint32_t;
 
 // A Cell contains all the attributes of a block in a terminal.
 //
-// Cells do not have any specification of position.
+// That is, they have:
+//
+// - foreground color
+// - background color
+// - underline status
+// - bold status
+// - reverse status
+//
+// Notably, Cells do not have any specification of position.
 class Cell: public Attributes::Toggleable {
  public:
   Cell();

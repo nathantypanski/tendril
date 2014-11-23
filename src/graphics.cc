@@ -24,16 +24,16 @@ void Graphics::Clear() {
   this->box->Clear();
 }
 
-void Graphics::DrawCell(position_t x,
-                        position_t y,
-                        const ::Cell::Cell c) {
+void Graphics::DrawCell(const position_t &x,
+                        const position_t &y,
+                        const ::Cell::Cell &c) {
   this->box->PutCell(x, y, c);
 }
 
-void Graphics::DrawHline(::Cell::Cell c,
-                         position_t y,
-                         position_t x,
-                         position_t length) {
+void Graphics::DrawHline(const ::Cell::Cell &c,
+                         const position_t &y,
+                         const position_t &x,
+                         const position_t &length) {
   assert (nullptr != this->box);
   for (auto xi = x; xi < length; ++xi) {
     this->box->PutCell(xi, y, c);
@@ -42,10 +42,10 @@ void Graphics::DrawHline(::Cell::Cell c,
 }
 
 
-void Graphics::DrawVline(::Cell::Cell c,
-                         position_t x,
-                         position_t y,
-                         position_t length) {
+void Graphics::DrawVline(const ::Cell::Cell &c,
+                         const position_t &x,
+                         const position_t &y,
+                         const position_t &length) {
   assert (nullptr != this->box);
   for (auto yi = y; yi < length; ++yi) {
     this->box->PutCell(x, yi, c);
@@ -53,9 +53,9 @@ void Graphics::DrawVline(::Cell::Cell c,
   this->box->Present();
 }
 
-void Graphics::WriteVec2(const position_t x,
-                         const position_t y,
-                         const std::vector<std::vector<::Cell::Cell>> a) {
+void Graphics::WriteVec2(const position_t &x,
+                         const position_t &y,
+                         const std::vector<std::vector<::Cell::Cell>> &a) {
   assert (a.size() > 0);
   int yi = y;
   auto size = a[0].size();
@@ -66,15 +66,15 @@ void Graphics::WriteVec2(const position_t x,
   }
 }
 
-void Graphics::WriteVec(const position_t x,
-                        const position_t y,
-                        const std::vector<::Cell::Cell> v) {
+void Graphics::WriteVec(const position_t &x,
+                        const position_t &y,
+                        const std::vector<::Cell::Cell> &v) {
   this->box->Blit(x, y, static_cast<position_t>(v.size()), 1, v);
 }
 
-void Graphics::WriteStrings(const position_t x,
-                            const position_t y,
-                            const std::vector<::std::string> sv) {
+void Graphics::WriteStrings(const position_t &x,
+                            const position_t &y,
+                            const std::vector<::std::string> &sv) {
   int yi = y;
   for (auto s : sv) {
     this->WriteString(x, yi, s);
@@ -82,43 +82,37 @@ void Graphics::WriteStrings(const position_t x,
   }
 }
 
-void Graphics::WriteString(position_t x,
-                            position_t y,
-                            ::std::string s) {
+void Graphics::WriteString(const position_t &x,
+                           const position_t &y,
+                           const ::std::string &s) {
+  auto xi = x;
   assert (nullptr != this->box);
   for(const auto c : s) {
     Cell::Cell cell(c);
     cell.fg(this->fg());
     cell.bg(this->bg());
-    this->box->PutCell(x, y, cell);
-    x++;
+    this->box->PutCell(xi, y, cell);
+    ++xi;
   }
   this->box->Present();
 }
 
-void Graphics::TeletypeText(position_t x,
-                             position_t y,
-                             ::std::string s) {
+void Graphics::TeletypeText(const position_t &x,
+                            const position_t &y,
+                            const ::std::string &s) {
   assert (nullptr != this->box);
+  auto xi = x;
   for(const auto c : s) {
     auto ch = c;
-    this->box->PutCell(x, y, this->GetDefaultCell(ch));
+    this->box->PutCell(xi, y, this->GetDefaultCell(ch));
     usleep(20000);
     this->box->Present();
-    x++;
+    ++xi;
   }
 }
 
 void Graphics::Present() {
   this->box->Present();
 }
-
-template<typename T>
-Cell::Cell Graphics::GetDefaultCell(T c) {
-  assert (nullptr != this->box);
-  Cell::Cell cell(c, this->fg(), this->bg(), this->bold(), this->underline(), this->reverse());
-  return cell;
-}
-
 
 } // namespace Graphics

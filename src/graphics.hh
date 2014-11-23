@@ -43,57 +43,69 @@ public:
 
   void Clear();
 
-  void DrawCell(position_t x,
-                position_t y,
-                const Cell::Cell b);
+  void DrawCell(const position_t &x,
+                const position_t &y,
+                const Cell::Cell &b);
 
-  void DrawHline(const Cell::Cell c,
-                 const position_t y,
-                 const position_t x,
-                 const position_t length);
+  void DrawHline(const Cell::Cell &c,
+                 const position_t &y,
+                 const position_t &x,
+                 const position_t &length);
 
   // Draw a vertical line of Cell::Cells at x, y.
-  void DrawVline(const Cell::Cell c,
-                 const position_t x,
-                 const position_t y,
-                 const position_t length);
+  void DrawVline(const Cell::Cell &c,
+                 const position_t &x,
+                 const position_t &y,
+                 const position_t &length);
 
-  void WriteVec2(const position_t x,
-                 const position_t y,
-                 const std::vector<std::vector<Cell::Cell>> a);
+  void WriteVec2(const position_t &x,
+                 const position_t &y,
+                 const std::vector<std::vector<Cell::Cell>> &a);
 
-  void WriteVec(const position_t x,
-                const position_t y,
-                const std::vector<Cell::Cell> a);
+  void WriteVec(const position_t &x,
+                const position_t &y,
+                const std::vector<Cell::Cell> &a);
 
-  void WriteStrings(const position_t x,
-                    const position_t y,
-                    const std::vector<std::string> sv);
+  void WriteStrings(const position_t &x,
+                    const position_t &y,
+                    const std::vector<std::string> &sv);
 
   // Write a string to the screen at location x, y.
-  void WriteString(const position_t x,
-                   const position_t y,
-                   const std::string s);
+  void WriteString(const position_t &x,
+                   const position_t &y,
+                   const std::string &s);
 
   // Write some text to the screen, key-by-key, with a "typewriter" effect.
-  void TeletypeText(const position_t x,
-                    const position_t y,
-                    const std::string s);
+  void TeletypeText(const position_t &x,
+                    const position_t &y,
+                    const std::string &s);
 
   void Present();
 
-  inline position_t get_width() const {
+  inline position_t width() const {
     assert (nullptr != this->box);
     return box->width();
   }
 
-  inline position_t get_height() const {
+  inline position_t height() const {
     assert (nullptr != this->box);
     return box->height();
   }
 
  protected:
-  template<typename T> Cell::Cell GetDefaultCell(const T c);
+  template<typename T>
+  Cell::Cell GetDefaultCell(const T &c) {
+    assert (nullptr != this->box);
+    Cell::Cell cell(c,
+                    this->fg(),
+                    this->bg(),
+                    this->bold(),
+                    this->underline(),
+                    this->reverse());
+  return cell;
+}
+
+
 private:
   std::shared_ptr<Box::Box> box;
 };

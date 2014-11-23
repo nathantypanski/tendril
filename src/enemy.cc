@@ -10,7 +10,7 @@ namespace Enemy {
 void Enemy::Tick() {
   this->Draw();
   auto height = this->y_ + (static_cast<int>(this->cells_.size()));
-  if (!this->dying_ && this->g_->get_height() > height + 5) {
+  if (!this->dying_ && this->g_->height() > height + 5) {
     this->Move();
   }
   else {

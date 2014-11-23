@@ -29,8 +29,8 @@ class Game {
     this->director_ = std::unique_ptr<Director::Director>
         (new Director::Director(this->graphics_));
 
-    this->keyboard_delay_ = std::chrono::milliseconds(5);
-    this->game_delay_ = std::chrono::milliseconds(100);
+    this->keyboard_delay_ = std::chrono::milliseconds(1);
+    this->game_delay_ = std::chrono::milliseconds(50);
     this->last_system_time_ = std::chrono::system_clock::now();
     this->input_queue_ = std::queue<Keyboard::Keypress>();
     this->running_ = true;

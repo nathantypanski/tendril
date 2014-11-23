@@ -7,6 +7,9 @@ namespace Cell {
 
 namespace Constants {
 
+// An empty cell that doesn't get written to the screen.
+static const char null_cell = '\0';
+
 namespace Colors {
 
 using color_t = uint16_t;

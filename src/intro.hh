@@ -12,8 +12,8 @@ void draw_intro(std::shared_ptr<Graphics::Graphics> &g) {
   std::string second_line = "the sky was that mean shade of gray.";
   std::string book = "Neuromancer";
   std::string author = ", William Gibson";
-  auto h_offset = g->get_width() / 3;
-  auto v_offset = g->get_height() / 3;
+  auto h_offset = g->width() / 3;
+  auto v_offset = g->height() / 3;
   g->bold(true);
   g->TeletypeText(h_offset,
                   v_offset,

@@ -38,6 +38,9 @@ void Box::HideCursor() {
 }
 
 void Box::PutCell(int x, int y, const Cell::Cell &cell) {
+  if ('\0' == cell.ch()) {
+    return;
+  }
   const auto tb = tb_cell(cell);
   tb_put_cell(x, y, &tb);
 }
