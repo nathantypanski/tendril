@@ -1,3 +1,5 @@
+#ifndef GRAPHICS_H_
+#define GRAPHICS_H_
 
 #include <string>
 #include <memory>
@@ -9,9 +11,6 @@
 #include "box.hh"
 #include "cell.hh"
 #include "cell_constants.hh"
-
-#ifndef GRAPHICS_H_
-#define GRAPHICS_H_
 
 namespace Graphics {
 
@@ -50,10 +49,13 @@ public:
                   const position_t y,
                   const position_t length);
 
-  void write_array(const position_t x,
-                   const position_t y,
-                   const position_t w,
-                   const std::vector<Cell::Cell> a);
+  void write_vec2(const position_t x,
+                  const position_t y,
+                  const std::vector<std::vector<Cell::Cell>> a);
+
+  void write_vec(const position_t x,
+                 const position_t y,
+                 const std::vector<Cell::Cell> a);
 
   void write_strings(const position_t x,
                      const position_t y,
@@ -68,14 +70,15 @@ public:
   void teletype_text(const position_t x,
                      const position_t y,
                      const std::string s);
+
   void present();
   inline position_t get_width() const {
     assert (nullptr != this->box);
-    return box->get_height();
+    return box->get_width();
   }
   inline position_t get_height() const {
     assert (nullptr != this->box);
-    return box->get_width();
+    return box->get_height();
   }
  protected:
   template<typename T> Cell::Cell get_default_cell(const T c);

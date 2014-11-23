@@ -25,11 +25,14 @@
 
 #include <string>
 #include <unistd.h>
+#include <cstdlib>
+#include <ctime>
 
 #include "game.hh"
 #include "debug.hh"
 
 int main(int argc, char** argv) {
+  std::srand(static_cast<uint>(std::time(0)));
   MONUnusedParameter(argc);
   MONUnusedParameter(argv);
   Game::Game game;

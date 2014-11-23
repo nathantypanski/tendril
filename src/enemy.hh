@@ -19,17 +19,21 @@ class Enemy : public Entity::Entity {
   Enemy(std::shared_ptr<Graphics::Graphics> g,
          position_t x,
          position_t y): Entity::Entity(g, x, y) {
-    for(int i = 0; i < 16; i++) {
-      Cell::Cell c;
-      c.set_bg(Cell::Constants::Colors::RED);
-      this->cells_.push_back(c);
+    for(int i = 0; i < 4; i++) {
+      std::vector<::Cell::Cell> v;
+      for(int j = 0; j < 3; j++) {
+        Cell::Cell c('.', Cell::Constants::Colors::RED, Cell::Constants::Colors::RED);
+        v.push_back(c);
+      }
+      this->cells_.push_back(v);
     }
-    this->width_ = 4;
+    this->dying_ = false;
   }
-
-  void Tick();
- private:
-  position_t width_;
+  virtual void Tick();
+ protected:
+  void Move();
+  void Die();
+  bool dying_;
 };
 
 } // namespace Enemy

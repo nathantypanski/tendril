@@ -21,18 +21,6 @@ void Box::set_clear_attributes(color_t fg, color_t bg) {
   tb_set_clear_attributes(fg, bg);
 }
 
-int Box::get_width() {
-  auto width = tb_width();
-  assert (width >= 0);
-  return width;
-}
-
-int Box::get_height() {
-  auto height = tb_height();
-  assert (height >= 0);
-  return height;
-}
-
 void Box::clear() {
   tb_clear();
 }

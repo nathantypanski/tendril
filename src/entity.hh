@@ -19,17 +19,24 @@ class Entity {
     this->g_ = g;
     this->x_ = x;
     this->y_ = y;
+    this->alive_ = true;
   }
-  virtual void Tick() = 0;
+  virtual ~Entity();
   void MoveUp();
   void MoveDown();
   void MoveLeft();
   void MoveRight();
-  virtual ~Entity();
+  inline bool alive() {
+    return this->alive_;
+  }
+  virtual void Tick();
  protected:
+  virtual void Draw();
+  virtual void Die();
+  bool alive_;
   position_t x_;
   position_t y_;
-  std::vector<Cell::Cell> cells_;
+  std::vector<std::vector<Cell::Cell>> cells_;
   std::shared_ptr<Graphics::Graphics> g_;
 };
 

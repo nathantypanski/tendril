@@ -35,7 +35,7 @@ class Game {
                             10,
                             10));
     this->entities_.insert(this->player_);
-    this->delay_ = std::chrono::milliseconds(5);
+    this->delay_ = std::chrono::milliseconds(30);
   }
 
   void Launch();

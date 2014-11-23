@@ -10,7 +10,6 @@ class Director {
  public:
   Director();
   ~Director();
- private:
 };
 
 } // namespace Director

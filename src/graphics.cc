@@ -61,22 +61,29 @@ void Graphics::draw_vline(::Cell::Cell c,
   this->box->present();
 }
 
-void Graphics::write_array(const position_t x,
-                           const position_t y,
-                           const position_t w,
-                           const ::std::vector<::Cell::Cell> a) {
-  auto x_ = x;
-  auto y_ = y;
-  auto h = static_cast<position_t>(a.size()) / w;
-  this->box->blit(x_, y_, w, h, a);
+void Graphics::write_vec2(const position_t x,
+                          const position_t y,
+                          const std::vector<std::vector<::Cell::Cell>> a) {
+  int yi = y;
+  for (auto e : a) {
+    this->write_vec(x, yi, e);
+    yi++;
+  }
+}
+
+void Graphics::write_vec(const position_t x,
+                         const position_t y,
+                         const std::vector<::Cell::Cell> v) {
+  this->box->blit(x, y, static_cast<position_t>(v.size()), 1, v);
 }
 
 void Graphics::write_strings(const position_t x,
                              const position_t y,
-                             const ::std::vector<::std::string> sv) {
+                             const std::vector<::std::string> sv) {
   int yi = y;
   for (auto s : sv) {
     this->write_string(x, yi, s);
+    yi++;
   }
 }
 

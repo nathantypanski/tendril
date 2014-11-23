@@ -28,9 +28,19 @@ class Cell: public Attributes::Toggleable {
   }
 
   template<typename T>
-  Cell(T c, Constants::Colors::color_t fg, Constants::Colors::color_t bg): Attributes::Toggleable()  {
+  Cell(T c, Constants::Colors::color_t fg): Attributes::Toggleable() {
     static_assert(std::is_convertible<T, character_t>::value,
                   "T must be convertible into a character");
+    static_assert(std::is_integral<T>::value,
+                  "T must be integral.");
+    this->ch_ = static_cast<character_t>(c);
+    this->fg_ = fg;
+  }
+
+  template<typename T>
+  Cell(T c, Constants::Colors::color_t fg, Constants::Colors::color_t bg): Attributes::Toggleable()  {
+    static_assert(std::is_convertible<T, character_t>::value,
+                  "T must be convertible into a character_t");
     this->ch_ = static_cast<character_t>(c);
     this->fg_ = fg;
     this->bg_ = bg;
@@ -51,7 +61,17 @@ class Cell: public Attributes::Toggleable {
     this->rv_ = rv;
   }
   Cell(const Cell &c);
-  character_t get_ch() const;
+  character_t ch() const;
+
+  template<typename T>
+  void ch(T c) {
+    static_assert(std::is_convertible<T, character_t>::value,
+                  "T must be convertible into a character");
+    static_assert(std::is_integral<T>::value,
+                  "T must be integral.");
+    this->ch_ = static_cast<character_t>(c);
+  }
+
   const operator tb_cell() const;
   const operator character_t() const;
   const operator char() const;

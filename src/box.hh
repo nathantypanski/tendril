@@ -56,14 +56,26 @@ class Box {
   Box();
   ~Box();
   void set_clear_attributes(color_t fg, color_t bg);
-  position_t get_width();
-  position_t get_height();
+  inline position_t get_width() {
+    auto width = tb_width();
+    assert (width >= 0);
+    return width;
+  }
+  inline position_t get_height() {
+    auto height = tb_height();
+    assert (height >= 0);
+    return height;
+  }
   void clear();
   void present();
   void set_cursor(int cx, int cy);
   void hide_cursor();
   void put_cell(int x, int y, const Cell::Cell &cell);
-  void blit(int x, int y, int w, int h, std::vector<Cell::Cell> cells);
+  void blit(position_t x,
+            position_t y,
+            position_t w,
+            position_t h,
+            std::vector<Cell::Cell> cells);
   int select_input_mode(int mode);
   int select_output_mode(OutputMode mode);
   EventType peek_event(struct tb_event *event, int timeout);

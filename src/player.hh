@@ -18,17 +18,18 @@ class Player: public Entity::Entity {
   Player(std::shared_ptr<Graphics::Graphics> g,
          ::Box::position_t x,
          ::Box::position_t y): Entity::Entity(g, x, y) {
-    for(int i = 0; i < 12; i++) {
-      Cell::Cell c;
-      c.set_bg(Cell::Constants::Colors::WHITE);
-      this->cells_.push_back(c);
+    for(int i = 0; i < 4; i++) {
+      std::vector<::Cell::Cell> v;
+      for(int j = 0; j < 3; j++) {
+        Cell::Cell c;
+        c.set_bg(Cell::Constants::Colors::WHITE);
+        v.push_back(c);
+      }
+      this->cells_.push_back(v);
     }
-    this->width_ = 3;
   }
 
-  void Tick();
- private:
-  ::Box::position_t width_;
+  virtual void Tick();
 };
 
 } // namespace Player

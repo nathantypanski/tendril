@@ -18,6 +18,18 @@ void Entity::MoveRight() {
   this->x_++;
 }
 
+void Entity::Tick() {
+  this->Draw();
+}
+
+void Entity::Draw() {
+  this->g_->write_vec2(this->x_, this->y_, this->cells_);
+}
+
+void Entity::Die() {
+
+}
+
 Entity::~Entity() {
 }
 

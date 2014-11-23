@@ -17,9 +17,11 @@ Cell::Cell(const Cell &c): Attributes::Toggleable() {
   this->rv_ = c.get_reverse();
 }
 
-character_t Cell::get_ch() const {
+character_t Cell::ch() const {
   return this->ch_;
 }
+
+
 
 const Cell::operator character_t() const {
   return  this->ch_;
@@ -50,7 +52,7 @@ const Cell::operator tb_cell() const {
 }
 
 bool Cell::operator==(const Cell &other) {
-  return this->get_ch() == other.get_ch()
+  return this->ch() == other.ch()
       && this->get_fg() == other.get_fg()
       && this->get_bg() == other.get_bg()
       && this->get_bold() == other.get_bold()

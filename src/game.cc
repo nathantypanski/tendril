@@ -25,8 +25,15 @@ void Game::Launch() {
 
 void Game::Tick() {
   this->graphics_->Clear();
-  for(auto e : this->entities_) {
+  for(auto i = this->entities_.begin(); i != this->entities_.end();) {
+    auto e = *i;
     e->Tick();
+    if (! e->alive()) {
+      this->entities_.erase(i++);
+    }
+    else {
+      ++i;
+    }
   }
   this->graphics_->present();
   this->ticks_++;
