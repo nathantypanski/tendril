@@ -25,15 +25,15 @@ void Graphics::Clear() {
 }
 
 void Graphics::DrawCell(position_t x,
-                         position_t y,
-                         const ::Cell::Cell c) {
+                        position_t y,
+                        const ::Cell::Cell c) {
   this->box->PutCell(x, y, c);
 }
 
 void Graphics::DrawHline(::Cell::Cell c,
-                          position_t y,
-                          position_t x,
-                          position_t length) {
+                         position_t y,
+                         position_t x,
+                         position_t length) {
   assert (nullptr != this->box);
   for (auto xi = x; xi < length; ++xi) {
     this->box->PutCell(xi, y, c);
@@ -43,9 +43,9 @@ void Graphics::DrawHline(::Cell::Cell c,
 
 
 void Graphics::DrawVline(::Cell::Cell c,
-                          position_t x,
-                          position_t y,
-                          position_t length) {
+                         position_t x,
+                         position_t y,
+                         position_t length) {
   assert (nullptr != this->box);
   for (auto yi = y; yi < length; ++yi) {
     this->box->PutCell(x, yi, c);
@@ -54,24 +54,27 @@ void Graphics::DrawVline(::Cell::Cell c,
 }
 
 void Graphics::WriteVec2(const position_t x,
-                          const position_t y,
-                          const std::vector<std::vector<::Cell::Cell>> a) {
+                         const position_t y,
+                         const std::vector<std::vector<::Cell::Cell>> a) {
+  assert (a.size() > 0);
   int yi = y;
+  auto size = a[0].size();
   for (auto e : a) {
+    assert (e.size() == size);
     this->WriteVec(x, yi, e);
     yi++;
   }
 }
 
 void Graphics::WriteVec(const position_t x,
-                         const position_t y,
-                         const std::vector<::Cell::Cell> v) {
+                        const position_t y,
+                        const std::vector<::Cell::Cell> v) {
   this->box->Blit(x, y, static_cast<position_t>(v.size()), 1, v);
 }
 
 void Graphics::WriteStrings(const position_t x,
-                             const position_t y,
-                             const std::vector<::std::string> sv) {
+                            const position_t y,
+                            const std::vector<::std::string> sv) {
   int yi = y;
   for (auto s : sv) {
     this->WriteString(x, yi, s);

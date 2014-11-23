@@ -30,9 +30,9 @@ class Entity {
     return this->alive_;
   }
   virtual void Tick();
- protected:
   virtual void Draw();
   virtual void Die();
+ protected:
   bool alive_;
   position_t x_;
   position_t y_;

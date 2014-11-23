@@ -7,18 +7,20 @@ namespace Cell {
 
 namespace Attributes {
 
+using Color = Constants::Colors::color_t;
+
 class Toggleable {
  public:
-  inline Constants::Colors::color_t fg() const {
+  inline Color fg() const {
     return this->fg_;
   }
-  inline void fg(Constants::Colors::color_t foreground) {
+  inline void fg(Color foreground) {
     this->fg_ = foreground;
   }
-  inline Constants::Colors::color_t bg() const {
+  inline Color bg() const {
     return this->bg_;
   }
-  inline void bg(Constants::Colors::color_t background) {
+  inline void bg(Color background) {
     this->bg_ = background;
   }
   inline bool bold() const {
@@ -41,8 +43,10 @@ class Toggleable {
   }
  protected:
   Toggleable();
-  Constants::Colors::color_t fg_;
-  Constants::Colors::color_t bg_;
+ private:
+  // Construct everything with the default arguments.
+  Color fg_;
+  Color bg_;
   bool ul_;
   bool bl_;
   bool rv_;

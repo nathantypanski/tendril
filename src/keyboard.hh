@@ -45,7 +45,7 @@ struct KeyEvent {
   };
 };
 
-KeyEvent PollEvent(std::shared_ptr<Box::Box> box);
+std::unique_ptr<Keypress> PollEvent(std::shared_ptr<Box::Box> box);
 
 } // namespace keybaord
 

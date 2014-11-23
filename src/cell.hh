@@ -34,31 +34,42 @@ class Cell: public Attributes::Toggleable {
     static_assert(std::is_integral<T>::value,
                   "T must be integral.");
     this->ch_ = static_cast<character_t>(c);
-    this->fg_ = fg;
+    this->fg(fg);
   }
 
   template<typename T>
-  Cell(T c, Constants::Colors::color_t fg, Constants::Colors::color_t bg): Attributes::Toggleable()  {
+  Cell(T c,
+       Constants::Colors::color_t fg,
+       Constants::Colors::color_t bg): Attributes::Toggleable()  {
     static_assert(std::is_convertible<T, character_t>::value,
                   "T must be convertible into a character_t");
+    static_assert(std::is_integral<T>::value,
+                  "T must be integral.");
     this->ch_ = static_cast<character_t>(c);
-    this->fg_ = fg;
-    this->bg_ = bg;
-    this->ul_ = Constants::Properties::CELL_DEFAULT_UL;
-    this->bl_ = Constants::Properties::CELL_DEFAULT_BL;
-    this->rv_ = Constants::Properties::CELL_DEFAULT_RV;
+    this->fg(fg);
+    this->bg(bg);
+    this->underline(Constants::Properties::CELL_DEFAULT_UL);
+    this->bold(Constants::Properties::CELL_DEFAULT_BL);
+    this->reverse(Constants::Properties::CELL_DEFAULT_RV);
   }
 
   template<typename T>
-  Cell(T c, Constants::Colors::color_t fg, Constants::Colors::color_t bg, bool ul, bool bl, bool rv) {
+  Cell(T c,
+       Constants::Colors::color_t fg,
+       Constants::Colors::color_t bg,
+       bool ul,
+       bool bl,
+       bool rv) {
     static_assert(std::is_convertible<T, character_t>::value,
                   "T must be convertible into a character");
+    static_assert(std::is_integral<T>::value,
+                  "T must be integral.");
     this->ch_ = static_cast<character_t>(c);
-    this->fg_ = fg;
-    this->bg_ = bg;
-    this->ul_ = ul;
-    this->bl_ = bl;
-    this->rv_ = rv;
+    this->fg(fg);
+    this->bg(bg);
+    this->underline(ul);
+    this->bold(bl);
+    this->reverse(rv);
   }
   Cell(const Cell &c);
   character_t ch() const;

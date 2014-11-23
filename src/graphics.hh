@@ -44,36 +44,36 @@ public:
   void Clear();
 
   void DrawCell(position_t x,
-                 position_t y,
-                 const Cell::Cell b);
+                position_t y,
+                const Cell::Cell b);
 
   void DrawHline(const Cell::Cell c,
-                  const position_t y,
-                  const position_t x,
-                  const position_t length);
+                 const position_t y,
+                 const position_t x,
+                 const position_t length);
 
   // Draw a vertical line of Cell::Cells at x, y.
   void DrawVline(const Cell::Cell c,
-                  const position_t x,
-                  const position_t y,
-                  const position_t length);
+                 const position_t x,
+                 const position_t y,
+                 const position_t length);
 
   void WriteVec2(const position_t x,
-                  const position_t y,
-                  const std::vector<std::vector<Cell::Cell>> a);
+                 const position_t y,
+                 const std::vector<std::vector<Cell::Cell>> a);
 
   void WriteVec(const position_t x,
-                 const position_t y,
-                 const std::vector<Cell::Cell> a);
+                const position_t y,
+                const std::vector<Cell::Cell> a);
 
   void WriteStrings(const position_t x,
-                     const position_t y,
-                     const std::vector<std::string> sv);
+                    const position_t y,
+                    const std::vector<std::string> sv);
 
   // Write a string to the screen at location x, y.
   void WriteString(const position_t x,
-                    const position_t y,
-                    const std::string s);
+                   const position_t y,
+                   const std::string s);
 
   // Write some text to the screen, key-by-key, with a "typewriter" effect.
   void TeletypeText(const position_t x,

@@ -10,18 +10,16 @@ Cell::Cell(): Attributes::Toggleable() {
 
 Cell::Cell(const Cell &c): Attributes::Toggleable() {
   this->ch_ = c.ch_;
-  this->fg_ = c.fg();
-  this->bg_ = c.bg();
-  this->ul_ = c.underline();
-  this->bl_ = c.bold();
-  this->rv_ = c.reverse();
+  this->fg(c.fg());
+  this->bg(c.bg());
+  this->underline(c.underline());
+  this->bold(c.bold());
+  this->reverse(c.reverse());
 }
 
 character_t Cell::ch() const {
   return this->ch_;
 }
-
-
 
 const Cell::operator character_t() const {
   return  this->ch_;

@@ -27,7 +27,7 @@ void Entity::Draw() {
 }
 
 void Entity::Die() {
-
+  this->alive_ = false;
 }
 
 Entity::~Entity() {
