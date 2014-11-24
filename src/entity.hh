@@ -23,8 +23,8 @@ class Entity {
   }
   virtual ~Entity();
   virtual void Die();
-  virtual bool IsAlive();
-  virtual void CollideEntity(Entity& other);
+  virtual bool IsAlive() const;
+  virtual bool Dying() const;
   bool MoveUp();
   bool MoveDown();
   bool MoveLeft();
@@ -68,12 +68,21 @@ class Entity {
 };
 
 template<class T, class S>
-bool EntityCollide(T t, S s) {
-  if (t.x() > s.x() + s.width() || t.x() + t.width() > s.x())
-    return false;
-  if (t.y() < s.y() + s.height() || t.y() + t.height() < s.y())
-    return false;
-  return true;
+bool EntityCollide(T& t, S& s) {
+  static_assert(std::is_base_of<Entity, T>::value,
+                "T must be a subclass of Entity");
+  static_assert(std::is_base_of<Entity, S>::value,
+                "S must be a subclass of Entity");
+  auto tx1 = t.x();
+  auto tx2 = t.x() + t.width();
+  auto ty1 = t.y();
+  auto ty2 = t.y() + t.height();
+  auto sx1 = s.x();
+  auto sx2 = s.x() + s.width();
+  auto sy1 = s.y();
+  auto sy2 = s.y() + s.height();
+  return (ty1 < sy2) && (ty2 > sy1)
+      && (tx1 < sx2) && (tx2 > sx1);
 };
 
 } // namespace Entity

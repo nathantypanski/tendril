@@ -15,12 +15,13 @@ class Star : public Entity::Entity {
        ::Box::position_t x,
        ::Box::position_t y);
   void Tick();
-  inline bool IsAlive() {
+  inline bool IsAlive() const {
     return this->living_;
   }
   inline void CollideScreenBottom() {
     this->living_ = false;
   }
+  ~Star();
  private:
   bool living_;
 };

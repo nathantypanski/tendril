@@ -6,7 +6,6 @@
 #include <memory>
 
 #include "entity.hh"
-#include "player.hh"
 #include "graphics.hh"
 #include "cell.hh"
 #include "cell_constants.hh"
@@ -20,18 +19,15 @@ class Enemy : public Entity::Entity {
   Enemy(std::shared_ptr<Graphics::Graphics> g,
         position_t x,
         position_t y);
-  virtual void CollideEntity(Entity::Entity& other);
-  virtual void CollideEntity(Enemy& other);
-  virtual void CollideEntity(Player::Player& other);
   virtual void Tick();
   virtual void Draw();
-  virtual bool IsAlive();
+  virtual bool IsAlive() const;
   virtual void CollideScreen();
+  void Die();
+  bool Dying() const;
  protected:
-  bool Dying();
   int death_ticks_;
   void Move();
-  void Die();
   bool dead_;
 };
 

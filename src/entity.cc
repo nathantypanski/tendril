@@ -6,11 +6,13 @@ namespace Entity {
 
 void Entity::Die() {}
 
-bool Entity::IsAlive() {
+bool Entity::IsAlive() const {
   return true;
 }
 
-void Entity::CollideEntity(Entity& ) {}
+bool Entity::Dying() const {
+  return false;
+}
 
 bool Entity::MoveUp() {
   if (this->y_ > 0) {

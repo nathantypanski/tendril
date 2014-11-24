@@ -49,6 +49,7 @@ void Director::HandleUserInput(Keyboard::Keypress keypress) {
 void Director::Tick() {
   this->enemy_factory_.Tick();
   this->enemy_factory_.MaybeSpawn();
+  this->enemy_factory_.CheckCollide(this->player_);
   this->player_->Tick();
   this->hud_->Tick();
 }

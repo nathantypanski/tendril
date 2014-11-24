@@ -93,27 +93,16 @@ void Enemy::Draw() {
   ::Entity::Entity::Draw();
 }
 
-void Enemy::CollideEntity(Entity::Entity&) {
-  CERR("ENEMY hit an entity.");
-}
-
-void Enemy::CollideEntity(Enemy&) {
-  CERR("ENEMY hit an ENEMY.");
-}
-
-void Enemy::CollideEntity(::Player::Player&) {
-  CERR("ENEMY hit a PLAYER.");
-}
-
 void Enemy::Die() {
-  this->death_ticks_ = Constants::ENEMY_DEATH_COUNT;
+  if (!this->Dying())
+    this->death_ticks_ = Constants::ENEMY_DEATH_COUNT;
 }
 
-bool Enemy::Dying() {
+bool Enemy::Dying() const {
   return this->death_ticks_ > 0 || this->dead_;
 }
 
-bool Enemy::IsAlive() {
+bool Enemy::IsAlive() const {
   return this->death_ticks_ >= 0;
 }
 
@@ -127,4 +116,4 @@ void Enemy::CollideScreen() {
   this->Die();
 }
 
-} // namespace Player
+} // namespace Enemy

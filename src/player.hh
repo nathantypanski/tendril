@@ -9,7 +9,9 @@
 #include "graphics.hh"
 #include "cell.hh"
 #include "box.hh"
+#include "enemy.hh"
 #include "cell_constants.hh"
+#include "player_constants.hh"
 
 namespace Player {
 
@@ -27,8 +29,7 @@ class Player: public Entity::Entity {
          ::Box::position_t y);
 
   void Die();
-  bool IsAlive();
-  void CollideEntity(Entity::Entity& other);
+  bool IsAlive() const;
 
   void Fire();
   void FiringGraphics();
@@ -62,8 +63,15 @@ class Player: public Entity::Entity {
     return this->fired_count_ > 0;
   }
 
+  bool Collide(Enemy::Enemy&);
+
+  inline int health() const {
+    return this->health_;
+  }
+
   virtual void Tick();
  private:
+  int health_;
 
   // These variables describe whether the user has decided to move in the given
   // direction - not the state of the game.

@@ -21,4 +21,8 @@ void Star::Tick() {
   }
 }
 
+Star::~Star() {
+
+}
+
 } // namespace Star

@@ -37,6 +37,7 @@ Player::Player(::std::shared_ptr<::Graphics::Graphics> g,
   v.push_back(Cell::Cell('-', WHITE, DEFAULT));
   this->cells_.push_back(v);
   v.clear();
+  this->health_ = Constants::STARTING_HEALTH;
 }
 
 void Player::Tick() {
@@ -104,13 +105,20 @@ void Player::Die() {
   return;
 }
 
-bool Player::IsAlive() {
+bool Player::IsAlive() const {
   //TODO
   return true;
 }
 
-void Player::CollideEntity(Entity::Entity& other) {
-  other.CollideEntity(*this);
+bool Player::Collide(Enemy::Enemy &e) {
+  if (!this->fired()) {
+    this->health_ -= Constants::HEALTH_HIT_LOSS;
+    return true;
+  }
+  else {
+    e.Die();
+    return false;
+  }
 }
 
 void Player::MoveLeft() {
