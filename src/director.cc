@@ -57,21 +57,6 @@ void Director::Draw() {
   this->hud_->Draw();
 }
 
-void Director::LargeHadronCollider() {
-}
-
-template <typename T>
-void Director::PurgeTheDead(std::unordered_set<std::shared_ptr<T>> &ev) {
-  for(auto i = ev.begin(); i != ev.end();) {
-    auto e = *i;
-    if (! e->IsAlive()) {
-      ev.erase(i++);
-    }
-    else {
-      ++i;
-    }
-  }
-}
 
 Director::~Director() {
 
