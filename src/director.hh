@@ -28,10 +28,12 @@ class Director {
   void PurgeTheDead(std::unordered_set<std::shared_ptr<T>> &ev);
   void LargeHadronCollider();
 
+  int player_score_;
+  int worm_score_;
   std::unique_ptr<GUI::HUD> hud_;
   EntityFactory::RandomEntityFactory<Enemy::Enemy> enemy_factory_;
   std::shared_ptr<Graphics::Graphics> graphics_;
-  std::shared_ptr<Player::Player> player_;
+  std::unique_ptr<Player::Player> player_;
 };
 
 } // namespace Director

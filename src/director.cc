@@ -13,9 +13,11 @@ Director::Director(std::shared_ptr<Graphics::Graphics> graphics)
                       std::uniform_int_distribution<int> (0, graphics->width()),
                       std::uniform_int_distribution<int> (0, 0)) {
   this->graphics_ = graphics;
-  this->player_ = std::shared_ptr<Player::Player>
+  this->player_ = std::unique_ptr<Player::Player>
       (new Player::Player(this->graphics_, 10, 10));
   this->hud_ = std::unique_ptr<GUI::HUD>(new GUI::HUD(this->graphics_));
+  this->player_score_ = 0;
+  this->worm_score_ = 0;
 }
 
 void Director::HandleUserInput(Keyboard::Keypress keypress) {
@@ -56,7 +58,6 @@ void Director::Draw() {
   this->player_->Draw();
   this->hud_->Draw();
 }
-
 
 Director::~Director() {
 
