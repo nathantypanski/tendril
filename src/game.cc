@@ -1,5 +1,7 @@
 #include "game.hh"
 
+#include <algorithm>
+
 #include "intro.hh"
 #include "enemy.hh"
 #include "keyboard_constants.hh"
@@ -34,10 +36,11 @@ void Game::Tick() {
     this->graphics_->Present();
     this->last_system_time_ = now;
     if (!this->input_queue_.empty()) {
-      this->director_->HandleUserInput(this->input_queue_.front());
-      while (!this->input_queue_.empty()) {
-        this->input_queue_.pop();
-      }
+      std::unique(this->input_queue_.begin(), this->input_queue_.end());
+      do {
+        this->director_->HandleUserInput(this->input_queue_.front());
+        this->input_queue_.pop_front();
+      } while (!this->input_queue_.empty());
     }
   }
 }
@@ -56,7 +59,7 @@ void Game::CheckForInput() {
           this->running_ = false;
           return;
         }
-        this->input_queue_.push(input);
+        this->input_queue_.push_back(input);
       }
       future_input_ = std::async(std::launch::async,
                                  Keyboard::PollEvent,

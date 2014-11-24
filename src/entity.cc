@@ -1,21 +1,59 @@
 #include "entity.hh"
 
+#include <cassert>
+
 namespace Entity {
 
-void Entity::MoveUp() {
-  this->y_--;
+void Entity::Die() {}
+
+bool Entity::IsAlive() {
+  return true;
 }
 
-void Entity::MoveDown() {
-  this->y_++;
+void Entity::CollideEntity(Entity& ) {}
+
+bool Entity::MoveUp() {
+  if (this->y_ > 0) {
+    this->y_--;
+    return true;
+  }
+  else {
+    this->CollideScreenTop();
+    return false;
+  }
 }
 
-void Entity::MoveLeft() {
-  this->x_--;
+bool Entity::MoveDown() {
+  if (this->y() + this->height() < this->g_->height()) {
+    this->y_++;
+    return true;
+  }
+  else {
+    this->CollideScreenBottom();
+    return false;
+  }
 }
 
-void Entity::MoveRight() {
-  this->x_++;
+bool Entity::MoveLeft() {
+  if (this->x() > 0) {
+    this->x_--;
+    return true;
+  }
+  else {
+    this->CollideScreenLeft();
+    return false;
+  }
+}
+
+bool Entity::MoveRight() {
+  if (this->x() + this->width() < this->g_->width()) {
+    this->x_++;
+    return true;
+  }
+  else {
+    this->CollideScreenRight();
+    return false;
+  }
 }
 
 void Entity::Tick() {
@@ -26,8 +64,24 @@ void Entity::Draw() {
   this->g_->WriteVec2(this->x_, this->y_, this->cells_);
 }
 
-void Entity::Die() {
-  this->alive_ = false;
+void Entity::CollideScreen() {
+  return;
+}
+
+void Entity::CollideScreenTop() {
+  this->CollideScreen();
+}
+
+void Entity::CollideScreenBottom() {
+  this->CollideScreen();
+}
+
+void Entity::CollideScreenLeft() {
+  this->CollideScreen();
+}
+
+void Entity::CollideScreenRight() {
+  this->CollideScreen();
 }
 
 Entity::~Entity() {

@@ -1,11 +1,43 @@
 #include "player.hh"
 
 #include <cstdlib>
-
 #include "cell_constants.hh"
-#include "debug.hh"
 
 namespace Player {
+
+Player::Player(::std::shared_ptr<::Graphics::Graphics> g,
+               ::Box::position_t x,
+               ::Box::position_t y): ::Entity::Entity(g, x, y) {
+  this->max_x_velocity_ = 30;
+  this->max_y_velocity_ = 30;
+  this->x_velocity_step_ = 3;
+  this->y_velocity_step_ = 1;
+  this->fired_count_ = 0;
+  this->fire_step_ = 5;
+  this->cells_.clear();
+  std::vector<::Cell::Cell> v;
+  v.clear();
+  v.push_back(Cell::Cell('/', WHITE, DEFAULT));
+  v.push_back(Cell::Cell('|', BLACK, WHITE));
+  v.push_back(Cell::Cell('\\', WHITE, DEFAULT));
+  this->cells_.push_back(v);
+  v.clear();
+  v.push_back(Cell::Cell(' ', BLACK, WHITE));
+  v.push_back(Cell::Cell('&', RED, WHITE));
+  v.push_back(Cell::Cell(' ', BLACK, WHITE));
+  this->cells_.push_back(v);
+  v.clear();
+  v.push_back(Cell::Cell('|', WHITE, DEFAULT));
+  v.push_back(Cell::Cell(' ', BLACK, WHITE));
+  v.push_back(Cell::Cell('|', WHITE, DEFAULT));
+  this->cells_.push_back(v);
+  v.clear();
+  v.push_back(Cell::Cell('-', WHITE, DEFAULT));
+  v.push_back(Cell::Cell('-', WHITE, DEFAULT));
+  v.push_back(Cell::Cell('-', WHITE, DEFAULT));
+  this->cells_.push_back(v);
+  v.clear();
+}
 
 void Player::Tick() {
   if (this->fired()) {
@@ -16,13 +48,16 @@ void Player::Tick() {
     }
     else if (this->fired_count_ == this->fire_step_ - 2) {
       this->cells_[0][1].bg(MAGENTA);
+      this->cells_[1][1].ch('-');
     }
     else if (this->fired_count_ == this->fire_step_ - 3) {
       this->cells_[0][1].ch(' ');
+      this->cells_[1][1].ch('|');
       this->cells_[0][1].bg(DEFAULT);
     }
     if (this->fired_count_ == this->fire_step_ - 4) {
       this->cells_[0][1].ch('|');
+      this->cells_[1][1].ch('=');
       this->cells_[0][1].fg(WHITE);
     }
     if (!this->fired()) {
@@ -61,8 +96,21 @@ void Player::Tick() {
 }
 
 void Player::Fire() {
-  CERR("Player fired.");
   this->fired_count_ = this->fire_step_;
+}
+
+void Player::Die() {
+  //TODO
+  return;
+}
+
+bool Player::IsAlive() {
+  //TODO
+  return true;
+}
+
+void Player::CollideEntity(Entity::Entity& other) {
+  other.CollideEntity(*this);
 }
 
 void Player::MoveLeft() {
@@ -114,6 +162,8 @@ void Player::FiringGraphics() {
 void Player::DefaultFiringGraphics() {
   this->cells_[0][1].ch('|');
   this->cells_[0][1].bg(WHITE);
+  this->cells_[1][1].ch('&');
+  this->cells_[1][1].bg(WHITE);
 }
 
 void Player::MoveLeftGraphics() {
@@ -137,7 +187,6 @@ void Player::DefaultRightGraphics() {
   this->cells_[2][0].fg(WHITE);
   this->cells_[2][0].bg(DEFAULT);
 }
-
 
 void Player::MoveUpGraphics() {
   this->cells_[3][0].ch('^');

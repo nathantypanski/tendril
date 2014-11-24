@@ -24,37 +24,11 @@ class Player: public Entity::Entity {
  public:
   Player(std::shared_ptr<Graphics::Graphics> g,
          ::Box::position_t x,
-         ::Box::position_t y): Entity::Entity(g, x, y) {
-    this->max_x_velocity_ = 30;
-    this->max_y_velocity_ = 30;
-    this->x_velocity_step_ = 3;
-    this->y_velocity_step_ = 1;
-    this->fired_count_ = 0;
-    this->fire_step_ = 5;
-    this->cells_.clear();
-    std::vector<::Cell::Cell> v;
-    v.clear();
-    v.push_back(Cell::Cell('/', WHITE, DEFAULT));
-    v.push_back(Cell::Cell('|', BLACK, WHITE));
-    v.push_back(Cell::Cell('\\', WHITE, DEFAULT));
-    this->cells_.push_back(v);
-    v.clear();
-    v.push_back(Cell::Cell(' ', BLACK, WHITE));
-    v.push_back(Cell::Cell('&', RED, WHITE));
-    v.push_back(Cell::Cell(' ', BLACK, WHITE));
-    this->cells_.push_back(v);
-    v.clear();
-    v.push_back(Cell::Cell('|', WHITE, DEFAULT));
-    v.push_back(Cell::Cell(' ', BLACK, WHITE));
-    v.push_back(Cell::Cell('|', WHITE, DEFAULT));
-    this->cells_.push_back(v);
-    v.clear();
-    v.push_back(Cell::Cell('-', WHITE, DEFAULT));
-    v.push_back(Cell::Cell('-', WHITE, DEFAULT));
-    v.push_back(Cell::Cell('-', WHITE, DEFAULT));
-    this->cells_.push_back(v);
-    v.clear();
-  }
+         ::Box::position_t y);
+
+  void Die();
+  bool IsAlive();
+  void CollideEntity(Entity::Entity& other);
 
   void Fire();
   void FiringGraphics();

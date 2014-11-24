@@ -11,10 +11,12 @@ Director::Director(std::shared_ptr<Graphics::Graphics> graphics) {
   this->graphics_ = graphics;
   this->player_ = std::shared_ptr<Player::Player>
       (new Player::Player(this->graphics_, 10, 10));
-  this->entities_.insert(this->player_);
   this->random_engine_ = std::default_random_engine(std::random_device()());
   this->rock_spawn_distribution_ = std::bernoulli_distribution(0.1);
   this->rock_location_distribution_ = std::uniform_int_distribution<int>
+      (0, this->graphics_->width());
+  this->star_spawn_distribution_ = std::bernoulli_distribution(0.2);
+  this->star_location_distribution_ = std::uniform_int_distribution<int>
       (0, this->graphics_->width());
   this->hud_ = std::unique_ptr<GUI::HUD>(new GUI::HUD(this->graphics_));
 }
@@ -46,9 +48,30 @@ void Director::HandleUserInput(Keyboard::Keypress keypress) {
 }
 
 void Director::Tick() {
-  this->PurgeTheDead();
+  this->player_->Tick();
+  std::for_each(this->entities_.begin(), this->entities_.end(),
+                [](const std::shared_ptr<Enemy::Enemy> &e) {
+                  e->Tick();
+                });
+  std::for_each(this->stars_.begin(), this->stars_.end(),
+                [](const std::shared_ptr<Star::Star> &e) {
+                  e->Tick();
+                });
+  this->PurgeTheDead(this->entities_);
+  this->PurgeTheDead(this->stars_);
   this->SpawnEnemies();
+  this->SpawnStars();
   this->hud_->Tick();
+}
+
+void Director::SpawnStars() {
+  if (this->star_spawn_distribution_(this->random_engine_)) {
+    auto star = std::shared_ptr<Star::Star>
+        (new Star::Star(this->graphics_,
+                          this->star_location_distribution_(this->random_engine_),
+                          0));
+    this->stars_.insert(star);
+  }
 }
 
 void Director::SpawnEnemies() {
@@ -61,12 +84,15 @@ void Director::SpawnEnemies() {
   }
 }
 
-void Director::PurgeTheDead() {
-  for(auto i = this->entities_.begin(); i != this->entities_.end();) {
+void Director::LargeHadronCollider() {
+}
+
+template <typename T>
+void Director::PurgeTheDead(std::unordered_set<std::shared_ptr<T>> &ev) {
+  for(auto i = ev.begin(); i != ev.end();) {
     auto e = *i;
-    e->Tick();
-    if (! e->alive()) {
-      this->entities_.erase(i++);
+    if (! e->IsAlive()) {
+      ev.erase(i++);
     }
     else {
       ++i;

@@ -31,6 +31,14 @@ class Keypress {
   inline Constants::ch_t ch() const {
     return this->ch_;
   }
+  inline bool operator==(const Keypress &other) {
+    return
+        (this->key() == other.key())
+        &&
+        (this->modkey() == other.modkey())
+        &&
+        (this->ch() == other.ch());
+  }
  private:
   Constants::modkey_t modkey_;
   Constants::key_t key_;

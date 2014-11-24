@@ -32,7 +32,7 @@ class Game {
     this->keyboard_delay_ = std::chrono::milliseconds(1);
     this->game_delay_ = std::chrono::milliseconds(50);
     this->last_system_time_ = std::chrono::system_clock::now();
-    this->input_queue_ = std::queue<Keyboard::Keypress>();
+    this->input_queue_ = std::deque<Keyboard::Keypress>();
     this->running_ = true;
   }
 
@@ -45,8 +45,10 @@ class Game {
   void MainLoop();
   bool running_;
   std::unique_ptr<Director::Director> director_;
+  std::bernoulli_distribution star_spawn_distribution_;
+  std::uniform_int_distribution<int> star_location_distribution_;
   std::chrono::system_clock::time_point last_system_time_;
-  std::queue<Keyboard::Keypress> input_queue_;
+  std::deque<Keyboard::Keypress> input_queue_;
   std::chrono::duration<long, std::milli> keyboard_delay_;
   std::chrono::duration<long, std::milli> game_delay_;
   std::future<std::unique_ptr<Keyboard::Keypress>> future_input_;
