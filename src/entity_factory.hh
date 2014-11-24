@@ -63,8 +63,7 @@ class RandomEntityFactory {
     for(auto i = this->entities_.begin(); i != this->entities_.end();) {
       auto e = (*i).get();
       if (Entity::EntityCollide(*e, *p)) {
-        p->Collide(*e);
-        return true;
+        return p->Collide(*e);
       }
       else {
         ++i;

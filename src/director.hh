@@ -24,10 +24,6 @@ class Director {
   void HandleUserInput(Keyboard::Keypress keypress);
   ~Director();
  private:
-  template <typename T>
-  void PurgeTheDead(std::unordered_set<std::shared_ptr<T>> &ev);
-  void LargeHadronCollider();
-
   int player_score_;
   int worm_score_;
   std::unique_ptr<GUI::HUD> hud_;

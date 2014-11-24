@@ -30,9 +30,6 @@ void Director::HandleUserInput(Keyboard::Keypress keypress) {
   if ('h' == ch) {
     this->player_->MoveLeft();
   }
-  if ('h' == ch) {
-    this->player_->MoveLeft();
-  }
   if ('j' == ch) {
     this->player_->MoveDown();
   }
@@ -50,6 +47,7 @@ void Director::Tick() {
   this->enemy_factory_.Tick();
   this->enemy_factory_.MaybeSpawn();
   this->enemy_factory_.CheckCollide(this->player_);
+  this->hud_->health(this->player_->health());
   this->player_->Tick();
   this->hud_->Tick();
 }

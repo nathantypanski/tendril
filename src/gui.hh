@@ -12,10 +12,15 @@ class HUD {
   HUD(std::shared_ptr<Graphics::Graphics> g) {
     this->health_bar_color_ = Cell::Constants::Colors::RED;
     this->graphics_ = g;
+    this->health_ = 0;
   }
   void Tick();
   void Draw();
+  inline void health(const int health) {
+    this->health_= health;
+  }
  private:
+  int health_;
   Cell::Constants::Colors::color_t health_bar_color_;
   std::shared_ptr<Graphics::Graphics> graphics_;
 };
