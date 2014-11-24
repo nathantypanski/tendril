@@ -9,6 +9,7 @@
 #include "star.hh"
 #include "gui.hh"
 #include "keyboard.hh"
+#include "entity_factory.hh"
 
 namespace Director {
 
@@ -19,23 +20,18 @@ class Director {
  public:
   Director(std::shared_ptr<Graphics::Graphics> graphics);
   void Tick();
+  void Draw();
   void HandleUserInput(Keyboard::Keypress keypress);
   ~Director();
  private:
   template <typename T>
   void PurgeTheDead(std::unordered_set<std::shared_ptr<T>> &ev);
   void LargeHadronCollider();
-  void SpawnEnemies();
-  void SpawnStars();
 
   std::unique_ptr<GUI::HUD> hud_;
-  std::default_random_engine random_engine_;
-  std::bernoulli_distribution rock_spawn_distribution_;
-  std::uniform_int_distribution<int> rock_location_distribution_;
+  EntityFactory::RandomEntityFactory<Enemy::Enemy> enemy_factory_;
   std::shared_ptr<Graphics::Graphics> graphics_;
   std::shared_ptr<Player::Player> player_;
-  std::unordered_set<std::shared_ptr<Enemy::Enemy>> entities_;
-  std::unordered_set<std::shared_ptr<Star::Star>> stars_;
 };
 
 } // namespace Director

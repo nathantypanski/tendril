@@ -15,6 +15,14 @@ class Star : public Entity::Entity {
        ::Box::position_t x,
        ::Box::position_t y);
   void Tick();
+  inline bool IsAlive() {
+    return this->living_;
+  }
+  inline void CollideScreenBottom() {
+    this->living_ = false;
+  }
+ private:
+  bool living_;
 };
 
 } // namespace Star

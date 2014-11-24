@@ -60,7 +60,6 @@ Enemy::Enemy(std::shared_ptr<Graphics::Graphics> g,
 }
 
 void Enemy::Tick() {
-  this->Draw();
   if (!this->Dying()) {
     this->Move();
   }

@@ -89,7 +89,7 @@ public:
 
   inline position_t height() const {
     assert (nullptr != this->box);
-    return box->height();
+    return box->height() - 1; // magic secret spot for the HUD.
   }
 
  protected:

@@ -7,17 +7,14 @@
 
 namespace Director {
 
-Director::Director(std::shared_ptr<Graphics::Graphics> graphics) {
+Director::Director(std::shared_ptr<Graphics::Graphics> graphics)
+    : enemy_factory_ (graphics,
+                      std::bernoulli_distribution(0.1),
+                      std::uniform_int_distribution<int> (0, graphics->width()),
+                      std::uniform_int_distribution<int> (0, 0)) {
   this->graphics_ = graphics;
   this->player_ = std::shared_ptr<Player::Player>
       (new Player::Player(this->graphics_, 10, 10));
-  this->random_engine_ = std::default_random_engine(std::random_device()());
-  this->rock_spawn_distribution_ = std::bernoulli_distribution(0.1);
-  this->rock_location_distribution_ = std::uniform_int_distribution<int>
-      (0, this->graphics_->width());
-  this->star_spawn_distribution_ = std::bernoulli_distribution(0.2);
-  this->star_location_distribution_ = std::uniform_int_distribution<int>
-      (0, this->graphics_->width());
   this->hud_ = std::unique_ptr<GUI::HUD>(new GUI::HUD(this->graphics_));
 }
 
@@ -48,40 +45,16 @@ void Director::HandleUserInput(Keyboard::Keypress keypress) {
 }
 
 void Director::Tick() {
+  this->enemy_factory_.Tick();
+  this->enemy_factory_.MaybeSpawn();
   this->player_->Tick();
-  std::for_each(this->entities_.begin(), this->entities_.end(),
-                [](const std::shared_ptr<Enemy::Enemy> &e) {
-                  e->Tick();
-                });
-  std::for_each(this->stars_.begin(), this->stars_.end(),
-                [](const std::shared_ptr<Star::Star> &e) {
-                  e->Tick();
-                });
-  this->PurgeTheDead(this->entities_);
-  this->PurgeTheDead(this->stars_);
-  this->SpawnEnemies();
-  this->SpawnStars();
   this->hud_->Tick();
 }
 
-void Director::SpawnStars() {
-  if (this->star_spawn_distribution_(this->random_engine_)) {
-    auto star = std::shared_ptr<Star::Star>
-        (new Star::Star(this->graphics_,
-                          this->star_location_distribution_(this->random_engine_),
-                          0));
-    this->stars_.insert(star);
-  }
-}
-
-void Director::SpawnEnemies() {
-  if (this->rock_spawn_distribution_(this->random_engine_)) {
-    auto enemy = std::shared_ptr<Enemy::Enemy>
-        (new Enemy::Enemy(this->graphics_,
-                          this->rock_location_distribution_(this->random_engine_),
-                          0));
-    this->entities_.insert(enemy);
-  }
+void Director::Draw() {
+  this->enemy_factory_.Draw();
+  this->player_->Draw();
+  this->hud_->Draw();
 }
 
 void Director::LargeHadronCollider() {

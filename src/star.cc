@@ -11,6 +11,7 @@ Star::Star(std::shared_ptr<Graphics::Graphics> g,
                          Cell::Constants::Colors::WHITE,
                          Cell::Constants::Colors::DEFAULT));
   this->cells_.push_back(v);
+  this->living_ = true;
 }
 
 void Star::Tick() {

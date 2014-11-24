@@ -67,6 +67,15 @@ class Entity {
   std::shared_ptr<Graphics::Graphics> g_;
 };
 
+template<class T, class S>
+bool EntityCollide(T t, S s) {
+  if (t.x() > s.x() + s.width() || t.x() + t.width() > s.x())
+    return false;
+  if (t.y() < s.y() + s.height() || t.y() + t.height() < s.y())
+    return false;
+  return true;
+};
+
 } // namespace Entity
 
 #endif /* ENTITY_H_ */

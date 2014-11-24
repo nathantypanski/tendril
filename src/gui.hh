@@ -14,6 +14,7 @@ class HUD {
     this->graphics_ = g;
   }
   void Tick();
+  void Draw();
  private:
   Cell::Constants::Colors::color_t health_bar_color_;
   std::shared_ptr<Graphics::Graphics> graphics_;

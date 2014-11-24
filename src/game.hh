@@ -2,10 +2,13 @@
 #define GAME_H_
 
 #include <memory>
+#include <unordered_set>
 
 #include "box.hh"
 #include "player.hh"
 #include "keyboard.hh"
+#include "entity_factory.hh"
+#include "star.hh"
 #include "director.hh"
 #include "graphics.hh"
 
@@ -20,22 +23,7 @@ using Keyboard::KeyEvent;
 
 class Game {
  public:
-  Game() {
-    this->box_ = std::shared_ptr<Box::Box>(new Box::Box);
-
-    this->graphics_ = std::shared_ptr<Graphics::Graphics>
-        (new Graphics::Graphics(this->box_));
-
-    this->director_ = std::unique_ptr<Director::Director>
-        (new Director::Director(this->graphics_));
-
-    this->keyboard_delay_ = std::chrono::milliseconds(1);
-    this->game_delay_ = std::chrono::milliseconds(50);
-    this->last_system_time_ = std::chrono::system_clock::now();
-    this->input_queue_ = std::deque<Keyboard::Keypress>();
-    this->running_ = true;
-  }
-
+  Game();
   void Launch();
   void HandleUserInput(Keyboard::Keypress usr_input);
   void CheckForInput();
@@ -44,6 +32,8 @@ class Game {
  private:
   void MainLoop();
   bool running_;
+  int star_tick_count_;
+  std::unique_ptr<EntityFactory::RandomEntityFactory<Star::Star>> star_factory_;
   std::unique_ptr<Director::Director> director_;
   std::bernoulli_distribution star_spawn_distribution_;
   std::uniform_int_distribution<int> star_location_distribution_;
@@ -55,6 +45,13 @@ class Game {
   std::shared_ptr<Box::Box> box_;
   std::shared_ptr<Graphics::Graphics> graphics_;
 };
+
+namespace Constants {
+
+const auto STAR_TICK_EVERY = 5;
+const auto STAR_FREQUENCY = 0.5;
+
+}
 
 } // namespace Game
 
