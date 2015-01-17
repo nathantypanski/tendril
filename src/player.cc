@@ -113,6 +113,7 @@ bool Player::IsAlive() const {
 bool Player::Collide(Enemy::Enemy &e) {
   if (!this->fired()) {
     this->health_ -= Constants::HEALTH_HIT_LOSS;
+    e.Die();
     return true;
   }
   else {
