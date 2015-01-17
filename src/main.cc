@@ -1,8 +1,3 @@
-// main.cpp
-//
-// Baloon game entry point.
-//
-// Author: Nathan Typanski <nathan.typanski.11@cnu.edu>
 // Copyright (c) 2014 Nathan Typanski
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
