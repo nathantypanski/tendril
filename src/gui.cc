@@ -12,10 +12,12 @@ void HUD::Draw() {
                   this->health_bar_color_);
   auto width = this->graphics_->width();
   auto height = this->graphics_->height();
+  auto bar_width = static_cast<int>(static_cast<double>(this->health_)
+          / 100.0 * static_cast<double>(width));
   this->graphics_->DrawHline(cell,
                              height,
                              0,
-                             this->health_ * 100 / width);
+                             bar_width);
 }
 
 } // namespace GUI
