@@ -2,6 +2,11 @@
 
 Tendril is a stupid terminal-based space game written in C++.
 
+## Requirements
+
+You'll need to have [termbox](https://github.com/nsf/termbox) in your system
+include path in order to build this code.
+
 ## License
 
 Copyright 2014-2015 Nathan Typanski
