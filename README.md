@@ -1,5 +1,7 @@
 # Tendril
 
+![dramatic gameplay screenshot](/img/screenshot.png)
+
 Tendril is a stupid terminal-based space game written in C++.
 
 ## Requirements
