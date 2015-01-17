@@ -1,4 +1,4 @@
-// A dead-simple class-based wrapper around termbox.
+// Class-based wrapper around termbox.
 
 #ifndef BOX_H_
 #define BOX_H_

@@ -11,6 +11,11 @@ Keypress::Keypress(tb_event ev) {
   this->ch_ = ev.ch;
 }
 
+// A wrapper around Box::Box::PollEvent yielding a keypress instead of
+// an EventType.
+//
+// TODO: make this handle ResizeEvents ... this would really benefit
+//     from a sum type. Is there a way to do that?
 std::unique_ptr<Keypress> PollEvent(std::shared_ptr<Box::Box> box) {
   assert (nullptr != box);
   tb_event tv;

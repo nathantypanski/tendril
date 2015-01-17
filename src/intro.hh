@@ -5,6 +5,8 @@
 #include <memory>
 #include "box.hh"
 
+// Draw the intro movie. In this case, it's just some text sent to the
+// screen.
 void draw_intro(std::shared_ptr<Graphics::Graphics> &g);
 
 void draw_intro(std::shared_ptr<Graphics::Graphics> &g) {
