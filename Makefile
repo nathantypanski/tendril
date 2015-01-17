@@ -35,7 +35,7 @@ TEST_DEFINES ?= -DDEBUG
 MAIN = main
 
 # Name for the main executable.
-MAIN_EXEC = balloon
+MAIN_EXEC = tendril
 
 SRCS=$(shell find src -name '*.cc')
 OBJS := $(addprefix $(OBJDIR)/,$(notdir $(SRCS:.cc=.o)))
